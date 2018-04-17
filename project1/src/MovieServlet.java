@@ -68,8 +68,8 @@ public class MovieServlet extends HttpServlet {
     		ResultSet resultSet = statement.executeQuery(query);
     		
     		out.println("<body>");
-    		out.println("<h1>Movie List</h1>");
-    		out.println("<table border>");
+    		out.println("<h1 class=\"block\">Movie List</h1>");
+    		out.println("<table border class=\"block\">");
     		
     		out.println("<tr>");
     		out.println("<td>title</td>");
