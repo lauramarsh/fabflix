@@ -17,6 +17,25 @@ body {
 	color: white;
 }
 
+searching_page
+.search {
+	background: black;
+	background-image: none;
+	padding: 20px;
+}
+
+.search .searchLabel {
+	color: white;
+	font-weight: bold;
+	font-size: 18x;
+	line-height: 3px;
+	text-align: left;
+}
+
+.search .searchItem {
+    text-align: left;
+}
+
 .title > h1 {
 	font-size: 4em;
 }
