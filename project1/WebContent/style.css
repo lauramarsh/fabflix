@@ -20,23 +20,3 @@ body {
 .title > h1 {
 	font-size: 4em;
 }
-
-.title--actions {
-	
-}
-
-.button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    height: 100px;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 12px;
-}
-
