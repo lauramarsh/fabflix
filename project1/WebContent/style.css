@@ -1,14 +1,28 @@
 body {
-	margin: 75px;
-	height: 200px;
-	line-height: 200px;
+	height: 100%;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attatchment: fixed;
+
+ 	background-image: url(background.jpg);
+	background-position: top;
+
+	color: white;
 	text-align: center;
-	background-image: url(background.jpg);
+	font-size: 100%;
 }
 
-.block {
+.title {
+	margin-top: 250px;
 	color: white;
-	background-color: black;
+}
+
+.title > h1 {
+	font-size: 4em;
+}
+
+.title--actions {
+	
 }
 
 .button {
