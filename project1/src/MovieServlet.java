@@ -42,7 +42,7 @@ public class MovieServlet extends HttpServlet {
         
         PrintWriter out = response.getWriter();
         out.println("<html>");
-        out.println("<head><title>Fabflix</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/></head>");
+        out.println("<head><title>Fabflix</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\"/></head>");
         
         try {
     		Class.forName("com.mysql.jdbc.Driver").newInstance();
