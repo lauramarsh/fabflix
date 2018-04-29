@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,43 +52,95 @@ public class SearchPage extends HttpServlet{
     		Statement statement = connection.createStatement();
     		
     		// Create search form 
-    		out.println("<form ACTION= \"search\" METHOD = \"GET\">");
-    		out.println("<input type=\"text\" name = \"query\" placeholder=\"Search...\">");
-    		out.print("<select name=\"search by\"><option value=\"title\">Title</option>");
-    		out.print("<option value=\"year\">Year</option><option value=\"director\">Director</option>");
-    		out.print("<option value=\"star name\">Star Name</option></select>");
-    		out.println("<button type=\"submit\"><i class=\"fa fa-search\"></i></button>");
+    		out.println("<form class = Search ACTION= \"search\" METHOD = \"GET\">");
+    		out.println("<div class=searchItem><div class=searchLabel><h3>Title</h3></div>");
+    		out.println("<input type=\"text\" name = \"title\" placeholder=\"Title...\"></div>");
+    		
+    		out.println("<div class=searchItem><div class=searchLabel><h3>Year</h3></div>");
+    		out.println("<input type=\"text\" name = \"year\" placeholder=\"Year...\"></div>");
+    		
+    		out.println("<div class=searchItem><div class=searchLabel><h3>Director</h3></div>");
+    		out.println("<input type=\"text\" name = \"director\" placeholder=\"Director...\"></div>");
+    		
+    		out.println("<div class=searchItem><div class=searchLabel><h3>Star Name</h3></div>");
+    		out.println("<input type=\"text\" name = \"star-name\" placeholder=\"Star Name...\"></div>");
+    	
+    		out.println("<button type=\"submit\"> GIV ME THE MOVEES </button>");
     		out.println("</form>");
     		
-    		String search = request.getParameter("query");
+    		//Build query string 
+    		String title = request.getParameter("title"),  director = request.getParameter("director");
+    		String year = request.getParameter("year"), star_name = request.getParameter("star-name");
     		
-    		String query = "SELECT * from movies where title like '%" + search + "'";
-    		 // Perform the query
-    		System.out.println(query);
-            ResultSet rs = statement.executeQuery(query);
+    		StringBuilder query = new StringBuilder();
+    		
+    		query.append("select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating");
+    		query.append(" from movies, genres_in_movies, genres, stars, stars_in_movies, ratings");
+    		query.append(" where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id");
+    		query.append(" and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id");
+    		query.append(" and movies.id = ratings.movieId");
+    		
+    		if(title.length() > 0) query.append(" and title like '%" + title + "%'");
+    		if(director.length() > 0) query.append(" and director like '%" + director + "%'");
+    		if(year.length() > 0) query.append(" and year = " +year);
+    		
+    		query.append(" group by movies.id, title, rating, year, director");
+    		if(star_name.length() > 0) query.append(" having stars_list like '%" + star_name + "%'");
+    		
+    		System.out.print(query.toString());
+    		
+    		ResultSet resultSet = statement.executeQuery(query.toString());
+    	
     		
             // Create a html <table>
             out.println("<table border>");
 
-            // Iterate through each row of rs and create a table row <tr>
-            out.println("<tr><td>ID</td><td>Name</td></tr>");
-            while (rs.next()) {
-                String ID = rs.getString("ID");
-                String title = rs.getString("title");
-                out.println(String.format("<tr><td>%s</td><td>%s</td></tr>", ID, title));
-            }
-            out.println("</table>");
+        	out.println("<body>");
+    		out.println("<h1 class=\"block\">Movie List</h1>");
+    		out.println("<table border class=\"block\">");
+    		
+    		out.println("<tr>");
+    		out.println("<td>title</td>");
+    		out.println("<td>year</td>");
+    		out.println("<td>director</td>");
+    		out.println("<td>genres</td>");
+    		out.println("<td>stars</td>");
+    		out.println("<td>rating</td>");
+    		out.println("</tr>");
+    		
+    		while (resultSet.next()) {
+    			// get a star from result set
+    			String movieTitle = resultSet.getString("title");
+    			String movieYear = resultSet.getString("year");
+    			String movieDir = resultSet.getString("director");
+    			String movieGenres = resultSet.getString("genre_list");
+    			String movieStars = resultSet.getString("stars_list");
+    			String movieRating = resultSet.getString("rating");
+    			
+    			out.println("<tr>");
+    			out.println("<td>" + movieTitle + "</td>");
+    			out.println("<td>" + movieYear + "</td>");
+    			out.println("<td>" + movieDir + "</td>");
+    			out.println("<td>" + movieGenres + "</td>");
+    			out.println("<td>" + movieStars + "</td>");
+    			out.println("<td>" + movieRating + "</td>");
+    			out.println("</tr>");
+    		}
+    		out.println("</table>");
+    		
+    		out.println("</body>");
+    		
     	
     		connection.close();
     		
         } catch (Exception e) {
         	e.printStackTrace();
     		
-    		out.println("<body>");
-    		out.println("<p>");
+    		//out.println("<body>");
+    		//out.println("<p>");
     		out.println("Exception in doGet: " + e.getMessage());
-    		out.println("</p>");
-    		out.print("</body>");
+    		//out.println("</p>");
+    		//out.print("</body>");
         }
         out.println("</html>");
         out.close();
