@@ -1,31 +1,23 @@
 body {
-	margin: 75px;
-	height: 200px;
-	line-height: 200px;
-	text-align: center;
-	background-image: url(background.jpg);
-}
+	height: 100%;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attatchment: fixed;
 
-.block {
+ 	background-image: url(background.jpg);
+	background-position: top;
+
 	color: white;
-	background-color: black;
+	text-align: center;
+	font-size: 100%;
 }
 
-.button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    height: 100px;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 12px;
+.title {
+	margin-top: 250px;
+	color: white;
 }
 
+searching_page
 .search {
 	background: black;
 	background-image: none;
@@ -44,6 +36,6 @@ body {
     text-align: left;
 }
 
-
-
-
+.title > h1 {
+	font-size: 4em;
+}
