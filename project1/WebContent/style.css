@@ -11,8 +11,18 @@ body {
 	font-size: 100%;
 }
 
+.browse {
+	width: 100%;
+}
+
+.browse--items {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
+
 .title {
-	margin-top: 250px;
+	margin-top: 300px;
 	color: white;
 }
 
