@@ -1,6 +1,12 @@
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class BrowseServlet
  */
-@WebServlet("/BrowseServlet")
+@WebServlet("/browselist")
 public class BrowseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,7 +33,114 @@ public class BrowseServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String loginUser = "root";
+        String loginPasswd = "pissoff";
+        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+        String genre = request.getParameter("genre");
+        String title = request.getParameter("title");
+   
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+        out.println("<html>");
+        out.println("<head>"
+        		+ "<meta charset=\"utf-8\">"
+        		+ "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">"
+        		+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>"
+        		+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\"/>"
+        		+ "<title>Fabflix: Browse Results</title>"
+        		+ "</head>");
+        
+        try {
+    		Class.forName("com.mysql.jdbc.Driver").newInstance();
+    		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+    		Statement statement = connection.createStatement();
+    		String query = "";
+    		
+    		if (genre != "") {
+    			// QUERIES
+        		query = "select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating "
+        				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
+        				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
+        				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
+        				+ "and movies.id = ratings.movieId "
+        				+ "group by movies.id, title, rating, year, director "
+        				+ "having genre_list like '%" + genre + "%' "
+        				+ "order by rating desc, title asc "
+        				+ "limit 20;";
+    		} else {
+    			query = "select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating "
+        				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
+        				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
+        				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
+        				+ "and movies.id = ratings.movieId "
+        				+ "group by movies.id, title, rating, year, director "
+        				+ "having title like '" + title + "%' "
+        				+ "order by rating desc, title asc "
+        				+ "limit 20;";
+    		}
+    		
+    		// execute query
+    		ResultSet resultSet = statement.executeQuery(query);
+    		
+    		out.println("<body>");
+    		out.println("<div class=\"title\">");
+    		out.println("<h1>" + genre + title + " Movies</h1>");
+    		out.println("</div>");
+    		
+    		out.println("<div class=\"block\">");
+    		out.println("<table class=\"table table__black\">");
+    		out.println("<thead>");
+    		out.println("<tr>");
+    		out.println("<th>title</td>");
+    		out.println("<th>year</td>");
+    		out.println("<th>director</td>");
+    		out.println("<th>genres</td>");
+    		out.println("<th>stars</td>");
+    		out.println("<th>rating</td>");
+    		out.println("</tr>");
+    		out.println("</thead>");
+    		out.println("<tbody>");
+
+    		
+    		while (resultSet.next()) {
+    			// get a star from result set
+    			String movieTitle = resultSet.getString("title");
+    			String movieYear = resultSet.getString("year");
+    			String movieDir = resultSet.getString("director");
+    			String movieGenres = resultSet.getString("genre_list");
+    			String movieStars = resultSet.getString("stars_list");
+    			String movieRating = resultSet.getString("rating");
+    			
+    			out.println("<tr>");
+    			out.println("<td>" + movieTitle + "</td>");
+    			out.println("<td>" + movieYear + "</td>");
+    			out.println("<td>" + movieDir + "</td>");
+    			out.println("<td>" + movieGenres + "</td>");
+    			out.println("<td>" + movieStars + "</td>");
+    			out.println("<td>" + movieRating + "</td>");
+    			out.println("</tr>");
+    		}
+    		out.println("</tbody>");
+    		out.println("</table>");
+    		out.println("</div>");
+    		
+    		out.println("</body>");
+    		
+    		resultSet.close();
+    		statement.close();
+    		connection.close();
+    		
+    		
+        } catch (Exception e) {
+        	e.printStackTrace();
+    		out.println("<body>");
+    		out.println("<p>");
+    		out.println("Exception in doGet: " + e.getMessage());
+    		out.println("</p>");
+    		out.print("</body>");
+        }
+        out.println("</html>");
+        out.close();
 	}
 
 	/**

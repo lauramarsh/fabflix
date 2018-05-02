@@ -69,7 +69,7 @@ public class MovieServlet extends HttpServlet {
     		
     		out.println("<body>");
     		out.println("<h1 class=\"block\">Movie List</h1>");
-    		out.println("<table border class=\"block\">");
+    		out.println("<table border class=\"table table__black\">");
     		
     		out.println("<tr>");
     		out.println("<td>title</td>");

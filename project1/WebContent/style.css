@@ -1,14 +1,26 @@
 body {
 	margin: 0;
+	background-color: black !important;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-image: url(background.jpg);
+	height: auto;
+	width: auto;
+	left: 0;
+	position: absolute;
+	top:0;
 	
 	min-height: 100%;
 	min-width: 100%;
 	color: white;
 	text-align: center;
 	font-size: 100%;
+}
+
+.block {
+	margin: 0 auto;
+	margin-top: 150px;
+	width: 75%;
 }
 
 .browse {
@@ -21,8 +33,14 @@ body {
 	margin: 0 auto;
 }
 
+.table__black {
+	background-color: black;
+	color: white;
+	width: 70%;
+}
+
 .title {
-	margin-top: 300px;
+	margin-top: 400px;
 	color: white;
 }
 
