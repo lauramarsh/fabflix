@@ -1,21 +1,50 @@
 body {
-	height: 100%;
 	margin: 0;
+<<<<<<< HEAD
 	
+=======
+	background-color: black !important;
+>>>>>>> 34a9831891f46fa40bb8d6eae64905864986b900
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-attatchment: fixed;
-
- 	background-image: url(background.jpg);
-	background-position: top;
-
+	background-image: url(background.jpg);
+	height: auto;
+	width: auto;
+	left: 0;
+	position: absolute;
+	top:0;
+	
+	min-height: 100%;
+	min-width: 100%;
 	color: white;
 	text-align: center;
 	font-size: 100%;
 }
 
+.block {
+	margin: 0 auto;
+	margin-top: 150px;
+	width: 75%;
+}
+
+.browse {
+	width: 100%;
+}
+
+.browse--items {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.table__black {
+	background-color: black;
+	color: white;
+	width: 70%;
+}
+
 .title {
-	margin-top: 250px;
+	margin-top: 400px;
 	color: white;
 }
 
