@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "SearchPage", urlPatterns = "/search")
+@WebServlet(name = "search", urlPatterns = "/search")
 public class SearchPage extends HttpServlet{
 	
 
@@ -37,6 +37,7 @@ public class SearchPage extends HttpServlet{
 		String loginUser = "root";
         String loginPasswd = "pissoff";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+        
         
         response.setContentType("text/html");
         
@@ -64,14 +65,18 @@ public class SearchPage extends HttpServlet{
     		
     		out.println("<div class=searchItem><div class=searchLabel><h3>Star Name</h3></div>");
     		out.println("<input type=\"text\" name = \"star-name\" placeholder=\"Star Name...\"></div>");
-    	
-    		out.println("<button type=\"submit\"> GIV ME THE MOVEES </button>");
-    		out.println("</form>");
     		
-    		//Build query string 
     		String title = request.getParameter("title"),  director = request.getParameter("director");
     		String year = request.getParameter("year"), star_name = request.getParameter("star-name");
-    		
+    	
+    		String url = request.getRequestURL() + "?" + request.getQueryString();
+    		System.out.println(url);
+    		out.println("<button type=\"button\" onclick=\"location.href='"+ request.getQueryString() + "'\"> Search</button>");
+
+    		out.println("</form>");
+
+    		//Build query string 
+    		    		
     		StringBuilder query = new StringBuilder();
     		
     		query.append("select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating");
@@ -136,11 +141,11 @@ public class SearchPage extends HttpServlet{
         } catch (Exception e) {
         	e.printStackTrace();
     		
-    		//out.println("<body>");
-    		//out.println("<p>");
+    		out.println("<body>");
+    		out.println("<p>");
     		out.println("Exception in doGet: " + e.getMessage());
-    		//out.println("</p>");
-    		//out.print("</body>");
+    		out.println("</p>");
+    		out.print("</body>");
         }
         out.println("</html>");
         out.close();
