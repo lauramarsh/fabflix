@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "search", urlPatterns = "/search")
+@WebServlet(name = "search", urlPatterns = "/searchlist")
 public class SearchPage extends HttpServlet{
 	
 
@@ -41,10 +41,16 @@ public class SearchPage extends HttpServlet{
         
         response.setContentType("text/html");
         
-        PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();   
         out.println("<html>");
-        out.println("<head><title>Fabflix</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/></head>");
-        out.println("<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">");
+        out.println("<head>"
+        		+ "<meta charset=\"utf-8\">"
+        		+ "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">"
+        		+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>"
+        		+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\"/>"
+        		+ "<title>Fabflix: Search Results</title>"
+        		+ "</head>");
+        
         
         try {
         	
@@ -52,66 +58,67 @@ public class SearchPage extends HttpServlet{
     		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
     		Statement statement = connection.createStatement();
     		
-    		// Create search form 
-    		out.println("<form class = Search ACTION= \"search\" METHOD = \"GET\">");
-    		out.println("<div class=searchItem><div class=searchLabel><h3>Title</h3></div>");
-    		out.println("<input type=\"text\" name = \"title\" placeholder=\"Title...\"></div>");
-    		
-    		out.println("<div class=searchItem><div class=searchLabel><h3>Year</h3></div>");
-    		out.println("<input type=\"text\" name = \"year\" placeholder=\"Year...\"></div>");
-    		
-    		out.println("<div class=searchItem><div class=searchLabel><h3>Director</h3></div>");
-    		out.println("<input type=\"text\" name = \"director\" placeholder=\"Director...\"></div>");
-    		
-    		out.println("<div class=searchItem><div class=searchLabel><h3>Star Name</h3></div>");
-    		out.println("<input type=\"text\" name = \"star-name\" placeholder=\"Star Name...\"></div>");
     		
     		String title = request.getParameter("title"),  director = request.getParameter("director");
     		String year = request.getParameter("year"), star_name = request.getParameter("star-name");
-    	
-    		String url = request.getRequestURL() + "?" + request.getQueryString();
-    		System.out.println(url);
-    		out.println("<button type=\"button\" onclick=\"location.href='"+ request.getQueryString() + "'\"> Search</button>");
-
-    		out.println("</form>");
 
     		//Build query string 
     		    		
     		StringBuilder query = new StringBuilder();
+    		StringBuilder queryDesc = new StringBuilder();
     		
-    		query.append("select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating");
+    		queryDesc.append("Search Results");
+    		
+    		query.append(" select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating");
     		query.append(" from movies, genres_in_movies, genres, stars, stars_in_movies, ratings");
     		query.append(" where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id");
     		query.append(" and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id");
     		query.append(" and movies.id = ratings.movieId");
     		
-    		if(title.length() > 0) query.append(" and title like '%" + title + "%'");
-    		if(director.length() > 0) query.append(" and director like '%" + director + "%'");
-    		if(year.length() > 0) query.append(" and year = " +year);
+    		
+    		if(year.length() > 0)
+    		{
+    			query.append(" and year = " +year);
+    		}
+    		if(director.length() > 0) 
+    		{
+    			query.append(" and director like '%" + director + "%'");
+    		}
+    		
+    		if(title.length() > 0)
+    		{
+    			query.append(" and title like '%" + title + "%'");
+    		}
     		
     		query.append(" group by movies.id, title, rating, year, director");
-    		if(star_name.length() > 0) query.append(" having stars_list like '%" + star_name + "%'");
     		
-    		System.out.print(query.toString());
-    		
-    		ResultSet resultSet = statement.executeQuery(query.toString());
-    	
-    		
-            // Create a html <table>
-            out.println("<table border>");
+    		if(star_name.length() > 0) 
+    		{
+    			query.append(" having stars_list like '%" + star_name + "%'");
+    		}
 
-        	out.println("<body>");
-    		out.println("<h1 class=\"block\">Movie List</h1>");
-    		out.println("<table border class=\"block\">");
+    		// execute query
+    		ResultSet resultSet = statement.executeQuery(query.toString());
     		
+    		out.println("<body>");
+    		out.println("<div class=\"title\">");
+    		out.println("<h1>" + queryDesc + " </h1>");
+    		out.println("</div>");
+    		
+    		out.println("<div class=\"block\">");
+    		out.println("<table class=\"table table__black\">");
+    		out.println("<thead>");
     		out.println("<tr>");
-    		out.println("<td>title</td>");
-    		out.println("<td>year</td>");
-    		out.println("<td>director</td>");
-    		out.println("<td>genres</td>");
-    		out.println("<td>stars</td>");
-    		out.println("<td>rating</td>");
+    		out.println("<th>title</td>");
+    		out.println("<th>year</td>");
+    		out.println("<th>director</td>");
+    		out.println("<th>genres</td>");
+    		out.println("<th>stars</td>");
+    		out.println("<th>rating</td>");
     		out.println("</tr>");
+    		out.println("</thead>");
+    		out.println("<tbody>");
+
     		
     		while (resultSet.next()) {
     			// get a star from result set
@@ -131,16 +138,19 @@ public class SearchPage extends HttpServlet{
     			out.println("<td>" + movieRating + "</td>");
     			out.println("</tr>");
     		}
+    		out.println("</tbody>");
     		out.println("</table>");
+    		out.println("</div>");
     		
     		out.println("</body>");
     		
-    	
+    		resultSet.close();
+    		statement.close();
     		connection.close();
+    			
     		
         } catch (Exception e) {
         	e.printStackTrace();
-    		
     		out.println("<body>");
     		out.println("<p>");
     		out.println("Exception in doGet: " + e.getMessage());
