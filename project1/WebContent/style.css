@@ -44,7 +44,6 @@ body {
 	color: white;
 }
 
-searching_page
 .search {
 	background: black;
 	background-image: none;
@@ -59,10 +58,20 @@ searching_page
 	text-align: left;
 }
 
+search .searchButton {
+	color: white;
+	padding: 30px;
+	
+}
+
 .search .searchItem {
     text-align: left;
 }
 
 .title > h1 {
 	font-size: 4em;
+}
+
+table {
+	background-color: black;
 }

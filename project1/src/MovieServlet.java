@@ -96,6 +96,7 @@ public class MovieServlet extends HttpServlet {
     			out.println("<td>" + movieGenres + "</td>");
     			out.println("<td>" + movieStars + "</td>");
     			out.println("<td>" + movieRating + "</td>");
+    			
     			out.println("</tr>");
     		}
     		out.println("</table>");
