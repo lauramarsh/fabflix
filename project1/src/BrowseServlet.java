@@ -36,9 +36,17 @@ public class BrowseServlet extends HttpServlet {
 		String loginUser = "root";
         String loginPasswd = "pissoff";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+        
+        // Search Params
         String genre = request.getParameter("genre");
         String title = request.getParameter("title");
+        
+        // Page/Nav Params
+        int page = Integer.parseInt(request.getParameter("page"));
+        int movieLimit = 15; // limit number of movies displayed on any one page
+        int offsetCount = page * movieLimit;
    
+        // HTML Generating
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -56,7 +64,7 @@ public class BrowseServlet extends HttpServlet {
     		Statement statement = connection.createStatement();
     		String query = "";
     		
-    		if (genre != "") {
+    		if (genre != "") { //For browse genre selections
     			// QUERIES
         		query = "select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating "
         				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
@@ -66,8 +74,8 @@ public class BrowseServlet extends HttpServlet {
         				+ "group by movies.id, title, rating, year, director "
         				+ "having genre_list like '%" + genre + "%' "
         				+ "order by rating desc, title asc "
-        				+ "limit 20;";
-    		} else {
+        				+ "limit " + Integer.toString(movieLimit) + " offset " + Integer.toString(offsetCount) + ";";
+    		} else { // For browse title selections
     			query = "select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating "
         				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
         				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
@@ -76,7 +84,7 @@ public class BrowseServlet extends HttpServlet {
         				+ "group by movies.id, title, rating, year, director "
         				+ "having title like '" + title + "%' "
         				+ "order by rating desc, title asc "
-        				+ "limit 20;";
+        				+ "limit " + Integer.toString(movieLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		}
     		
     		// execute query
@@ -87,7 +95,9 @@ public class BrowseServlet extends HttpServlet {
     		out.println("<h1>" + genre + title + " Movies</h1>");
     		out.println("</div>");
     		
+    		// Page items container
     		out.println("<div class=\"block\">");
+    		// Movie list table
     		out.println("<table class=\"table table__black\">");
     		out.println("<thead>");
     		out.println("<tr>");
@@ -99,9 +109,8 @@ public class BrowseServlet extends HttpServlet {
     		out.println("<th>rating</td>");
     		out.println("</tr>");
     		out.println("</thead>");
+    		// Movie list items
     		out.println("<tbody>");
-
-    		
     		while (resultSet.next()) {
     			// get a star from result set
     			String movieTitle = resultSet.getString("title");
@@ -122,10 +131,24 @@ public class BrowseServlet extends HttpServlet {
     		}
     		out.println("</tbody>");
     		out.println("</table>");
+    		
+    		// Pagination Navigation
+    		out.println("<nav aria-label=\"movie list page nav\">");
+    		out.println("<ul class=\"pagination\">");
+    		if (page > 0) { //not the first result page
+        		out.println("<li class=\"page-item\">"
+        				+ "<a class=\"page-link\" href=\"http://localhost:8080/project1/browselist?page=" + Integer.toString(page-1) 
+        				+ "&genre=" + genre + "&title=" + title + "\">Prev</a></li>");    			
+    		}
+    		out.println("<li class=\"page-item\">"
+    				+ "<a class=\"page-link\" href=\"http://localhost:8080/project1/browselist?page=" + Integer.toString(page+1) 
+    				+ "&genre=" + genre + "&title=" + title + "\">Next</a></li>");
+    		out.println("</ul>");
+    		out.println("</nav>");
+    		
+    		
     		out.println("</div>");
-    		
     		out.println("</body>");
-    		
     		resultSet.close();
     		statement.close();
     		connection.close();
