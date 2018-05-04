@@ -47,6 +47,17 @@ body {
 	margin: 0 auto;
 }
 
+.link {
+	text-decoration: none;
+	display: grid;
+	padding: 0 !important;
+}
+
+.link__scroll {
+	overflow-y: scroll;
+	height: 200px;
+}
+
 .movie {
 	display: flex;
 }
