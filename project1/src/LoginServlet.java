@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 //
-@WebServlet(name = "LoginServlet", urlPatterns = "/loginpage")
+@WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -28,9 +28,7 @@ public class LoginServlet extends HttpServlet {
     	        String loginPasswd = "pissoff";
     	        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
-    	        response.setContentType("text/html");
     	        
-    	        PrintWriter out = response.getWriter();
     	        
     	        
         try {
@@ -81,12 +79,7 @@ public class LoginServlet extends HttpServlet {
 	            response.getWriter().write(responseJsonObject.toString());
 	        }
         } catch (Exception e) {
-			e.printStackTrace();
-			out.println("<body>");
-			out.println("<p>");
-			out.println("Exception in doGet: " + e.getMessage());
-			out.println("</p>");
-			out.print("</body>");
+			
 		}
         
 

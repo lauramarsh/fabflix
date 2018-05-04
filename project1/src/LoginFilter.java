@@ -40,7 +40,7 @@ public class LoginFilter implements Filter {
         
         //only allow access to login page and styling pages 
         return requestURI.endsWith("login.html") || requestURI.endsWith("login.js")
-                || requestURI.endsWith("/loginpage")  || requestURI.endsWith("bootstrap.min..css")
+                || requestURI.endsWith("api/login")  || requestURI.endsWith("bootstrap.min..css")
                 || requestURI.endsWith("style.css") || requestURI.endsWith("background.jpg") ;
         
     }
