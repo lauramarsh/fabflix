@@ -94,7 +94,7 @@ public class SearchPage extends HttpServlet{
     		
     		queryDesc.append("Search Results");
     		
-    		query.append(" select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating");
+    		query.append(" select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(concat(stars.name, \':\', stars.id)) as stars_list, rating");
     		query.append(" from movies, genres_in_movies, genres, stars, stars_in_movies, ratings");
     		query.append(" where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id");
     		query.append(" and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id");
@@ -164,18 +164,28 @@ public class SearchPage extends HttpServlet{
     			String movieYear = resultSet.getString("year");
     			String movieDir = resultSet.getString("director");
     			String movieGenres = resultSet.getString("genre_list");
-    			String movieStars = resultSet.getString("stars_list");
     			String movieRating = resultSet.getString("rating");
+    			
+    			// Unload stars_list
+    			String movieStars = resultSet.getString("stars_list");
+    			String[] starsList = movieStars.split(","); // contains both star and id --> 'star:id'
+    			String starsHyperlinked = "";
+    			for(int i=0; i<starsList.length; i++) {
+    				String[] currentStar = starsList[i].split(":");
+    				String starName = currentStar[0];
+    				String starID = currentStar[1];
+    				starsHyperlinked += "<a href=\"/project1/starpage?starID="+starID+"\">"+starName+"</a>";
+    			}
     			
     			out.println("<tr>");
                 out.println("<td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>");
     			out.println("<td>" + movieId + "</td>");
-    			out.println("<td> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 
+    			out.println("<td class=\"link\"> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 
     					+ movieTitle + "</a><p class = \"hiddenText\">spacefillerspacefiller<p></td>");
     			out.println("<td>" + movieYear + "<p class = \"hiddenText\">spacefiller<p></td>");
     			out.println("<td>" + movieDir + "</td>");
     			out.println("<td>" + movieGenres + "</td>");
-    			out.println("<td>" + movieStars + "</td>");
+    			out.println("<td class=\"link link__scroll\">" + starsHyperlinked + "</td>");
     			out.println("<td>" + movieRating + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
     			out.println("</tr>");
     		}
