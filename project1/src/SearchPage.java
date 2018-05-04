@@ -138,7 +138,7 @@ public class SearchPage extends HttpServlet{
     		out.println("<a  class =\"btn btn-danger\"  href = \"cart.html\">My Cart</a>");
     		out.println("<a  class =\"btn btn-danger\"  href = \"cart.html\">Checkout</a>");
     		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
-    		out.println("/div");
+    		out.println("</div>");
     		out.println("<div class=\"title\">");
     		out.println("<h1>" + queryDesc + " </h1>");
     		out.println("</div>");
