@@ -129,8 +129,6 @@ public class BrowseServlet extends HttpServlet {
     		
     		out.println("<body>");
     		out.println("<div class = \"cartLinks\">");
-    		out.println("<a  class =\"btn btn-danger\"  href = \"cart.html\">My Cart</a>");
-    		out.println("<a  class =\"btn btn-danger\"  href = \"cart.html\">Checkout</a>");
     		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
     		out.println("</div>");
     		out.println("<div class=\"title\">");
