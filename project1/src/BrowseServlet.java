@@ -38,15 +38,15 @@ public class BrowseServlet extends HttpServlet {
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
         
     	
-        // Search Params
-        String genre = request.getParameter("genre");
-        String title = request.getParameter("title");
+    // Search Params
+    String genre = request.getParameter("genre");
+    String title = request.getParameter("title");
 		// Sorting params
 		String title_order = request.getParameter("title-order"),  rating_order = request.getParameter("rating-order");
-        // Page/nav params
-        int page = Integer.parseInt(request.getParameter("page"));
-        int movieLimit = 15; // limit number of movies displayed on any one page
-        int offsetCount = page * movieLimit;
+    // Page/nav params
+    int page = Integer.parseInt(request.getParameter("page"));
+    int movieLimit = 15; // limit number of movies displayed on any one page
+    int offsetCount = page * movieLimit;
 		
 		// Create urls for sorting re-direction 
 		String base_url = request.getRequestURL().toString() + "?title=" + title + "&genre=" 
@@ -58,7 +58,14 @@ public class BrowseServlet extends HttpServlet {
 		String url_rating_ordered_asc = base_url + "&title-order=&rating-order=asc&page=" + page;
 		String url_title_ordered_desc = base_url + "&title-order=desc&rating-order=&page=" + page;
 		String url_rating_ordered_desc = base_url + "&title-order=&rating-order=desc&page=" + page;
-   
+
+    String results = request.getParameter("results");
+    int resultLimit = 20;
+    if (results != null && !results.equals("")) {
+      resultLimit = Integer.parseInt(results); 
+    }
+    int offsetCount = page * resultLimit;
+
         // HTML Generating
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
@@ -169,7 +176,20 @@ public class BrowseServlet extends HttpServlet {
     		
     		// Pagination Navigation
     		String pageUrl = base_url + "&page=" + "&title-order=" + title_order + "&rating-order=" + rating_order;
-    		
+    	    		
+    		out.println("<form action=\"http://localhost:8080/project1/browselist?page=" + Integer.toString(page) + "&genre=" + genre + "&title=" + title + "\">");
+    		out.println("<select name=\"results\">");
+    		out.println("<option value=\"10\">10</option>");
+    		out.println("<option value=\"20\">20</option>");
+    		out.println("<option value=\"50\">50</option>");
+    		out.println("<option value=\"100\">100</option>");
+    		out.println("</select>");
+    		out.println("<input type=\"submit\" value=\"view\">");
+    		out.println("<input type=\"hidden\" name=\"page\" value=\"0\">");
+    		out.println("<input type=\"hidden\" name=\"genre\" value=\"" + genre + "\">");
+    		out.println("<input type=\"hidden\" name=\"title\" value=\"" + title + "\">");
+    		out.println("</form>");
+
     		out.println("<nav aria-label=\"movie list page nav\">");
     		out.println("<ul class=\"pagination\">");
     		if (page > 0) { //not the first result page
