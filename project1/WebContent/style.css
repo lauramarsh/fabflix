@@ -20,7 +20,16 @@ body {
 .block {
 	margin: 0 auto;
 	margin-top: 150px;
-	width: 75%;
+}
+
+.block__fat {
+	padding-left: 200px;
+	padding-right: 200px;
+}
+
+.block__thin {
+	padding-left: 400px;
+	padding-right: 400px;
 }
 
 .browse {
@@ -31,6 +40,10 @@ body {
 	width: 50%;
 	text-align: center;
 	margin: 0 auto;
+}
+
+.movie {
+	display: flex;
 }
 
 .table__black {
@@ -48,6 +61,7 @@ body {
 	font-size: 4em;
 }
 
-table {
-	background-color: black;
+.title > h2 {
+	font-size: 2em;
+	text-align: left;
 }

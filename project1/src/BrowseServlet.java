@@ -100,7 +100,7 @@ public class BrowseServlet extends HttpServlet {
     		out.println("</div>");
     		
     		// Page items container
-    		out.println("<div class=\"block\">");
+    		out.println("<div class=\"block block__fat\">");
     		// Movie list table
     		out.println("<table class=\"table table__black\">");
     		out.println("<thead>");
@@ -137,7 +137,6 @@ public class BrowseServlet extends HttpServlet {
     		out.println("</table>");
     		
     		// Pagination Navigation
-    		
     		out.println("<form action=\"http://localhost:8080/project1/browselist?page=" + Integer.toString(page) + "&genre=" + genre + "&title=" + title + "\">");
     		out.println("<select name=\"results\">");
     		out.println("<option value=\"10\">10</option>");

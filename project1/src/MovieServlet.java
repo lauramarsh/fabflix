@@ -39,73 +39,47 @@ public class MovieServlet extends HttpServlet {
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
         
         response.setContentType("text/html");
-        
         PrintWriter out = response.getWriter();
+
+        // Get Movie ID parameter
+        String movieTitle = request.getParameter("movie");
+        
+        // Begin html output
         out.println("<html>");
-        out.println("<head><title>Fabflix</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\"/></head>");
+        out.println("<head><title>Fabflix Movie Page</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\"/></head>");
         
         try {
     		Class.forName("com.mysql.jdbc.Driver").newInstance();
     		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
     		Statement statement = connection.createStatement();
     		
-    		// QUERYS 
-    		String query = "SELECT c.title, c.director, c.year, c.rating, c.genre_list, group_concat(c.star) as stars_list  from " + 
-    				"(SELECT b.movieid, b.title, b.director, b.year, b.rating, b.genre_list,  stars.name as star  from " + 
-    				"(SELECT a.movieid, a.title, a.director, a.year, a.rating, group_concat(a.genre) as genre_list from " + 
-    				"(SELECT movies.id as movieid , title, director, year, rating, genres.name as genre from " + 
-    				"movies join ratings on movies.id  = ratings.movieId " + 
-    				"join genres_in_movies on movies.id = genres_in_movies.movieId " + 
-    				"join genres on genres.id = genres_in_movies.genreId )a " + 
-    				"group by a.movieid, a.title, a.rating,a.year, a.director  )b " + 
-    				"join stars_in_movies on b.movieid = stars_in_movies.movieId " + 
-    				"join stars on stars.id = stars_in_movies.starId )c " + 
-    				"group by c.movieid, c.title, c.rating,c.year, c.director " + 
-    				"order by c.rating desc, c.title asc " + 
-    				"limit 20";
+    		// Query 
+    		String query = "select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating "
+    				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
+    				+ "where movies.id = genres_in_movies.movieId "
+    				+ "and genres_in_movies.genreId = genres.id "
+    				+ "and movies.id = stars_in_movies.movieId "
+    				+ "and stars_in_movies.starId = stars.id "
+    				+ "and movies.id = ratings.movieId "
+    				+ "group by movies.id, title, rating, year, director "
+    				+ "having title like '" + movieTitle + "';";
 
-    		// execute query
+    		// ResultSet should be 1 movie, resultSet.next() is null
     		ResultSet resultSet = statement.executeQuery(query);
     		
+    		// Dynamic HTML
     		out.println("<body>");
-    		out.println("<h1 class=\"block\">Movie List</h1>");
-    		out.println("<table border class=\"table table__black\">");
+    		out.println("<div class=\"block block__thin\">");
+    		out.println("<div class=\"title\">");
+    		out.println("<h2>"+ movieTitle + "</h2>");
+    		out.println("</div>");
+    		out.println("<div class=\"movie\">");
+    		out.println("<img class=\"movie--poster\" src=\"#\">");
+    		out.println("<div class=\"movie--info\">");
+    		out.println("<h3>");
     		
-    		out.println("<tr>");
-    		out.println("<td>title</td>");
-    		out.println("<td>year</td>");
-    		out.println("<td>director</td>");
-    		out.println("<td>genres</td>");
-    		out.println("<td>stars</td>");
-    		out.println("<td>rating</td>");
-    		out.println("</tr>");
     		
-    		while (resultSet.next()) {
-    			// get a star from result set
-    			String movieTitle = resultSet.getString("title");
-    			String movieYear = resultSet.getString("year");
-    			String movieDir = resultSet.getString("director");
-    			String movieGenres = resultSet.getString("genre_list");
-    			String movieStars = resultSet.getString("stars_list");
-    			String movieRating = resultSet.getString("rating");
-    			
-    			out.println("<tr>");
-    			out.println("<td>" + movieTitle + "</td>");
-    			out.println("<td>" + movieYear + "</td>");
-    			out.println("<td>" + movieDir + "</td>");
-    			out.println("<td>" + movieGenres + "</td>");
-    			out.println("<td>" + movieStars + "</td>");
-    			out.println("<td>" + movieRating + "</td>");
-    			
-    			out.println("</tr>");
-    		}
-    		out.println("</table>");
-    		
-    		out.println("</body>");
-    		
-    		resultSet.close();
-    		statement.close();
-    		connection.close();
+    	
     		
         } catch (Exception e) {
         	e.printStackTrace();
