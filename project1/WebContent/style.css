@@ -46,10 +46,15 @@ body {
 	display: flex;
 }
 
+.movie--poster {
+	width: 400px;
+	align-self: center;
+}
+
 .table__black {
 	background-color: black;
 	color: white;
-	width: 70%;
+	table-layout: fixed;
 }
 
 .title {
