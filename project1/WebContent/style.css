@@ -1,3 +1,8 @@
+html {
+	margin-left: auto;
+	margin-left: auto;
+}
+
 body {
 	margin: 0;
 	background-color: black !important;
@@ -81,7 +86,6 @@ button {
 	padding: 0px 15px;
 }
 
-
 .rowHead a {
     color: white;
     border-radius: 4px !important;
@@ -90,12 +94,20 @@ button {
     text-decoration: none !important;
 }
 
+.browse--items .Search .searchItems{
+	padding-bottom: 5px !important;
+}
+
 td {
 	padding: 0px 15px !important;
 }
 
 tbody .hiddenText{
 	color: black;
+}
+
+input {
+	color: black !important;
 }
 
 
