@@ -103,7 +103,7 @@ public class BrowseServlet extends HttpServlet {
     		
     		if (genre != "") { //For browse genre selections
     			// QUERIES
-        		query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(concat(stars.name, \':\', stars.id)) as stars_list, rating "
+        		query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating "
         				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
         				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
@@ -113,7 +113,7 @@ public class BrowseServlet extends HttpServlet {
         				+ sortBy
         				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		} else { // For browse title selections
-    			query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(concat(stars.name, \':\', stars.id)) as stars_list, rating "
+    			query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating "
         				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
         				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "

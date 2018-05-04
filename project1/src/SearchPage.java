@@ -75,7 +75,7 @@ public class SearchPage extends HttpServlet{
             	results = "20";
             }
             int offsetCount = page * resultLimit;
-    		
+           
     		// Create urls for sorting re-direction 
             String this_url = request.getRequestURL().toString();
     	    String domain_url = this_url.substring(0, this_url.lastIndexOf("/") + 1);
@@ -94,7 +94,7 @@ public class SearchPage extends HttpServlet{
     		
     		queryDesc.append("Search Results");
     		
-    		query.append(" select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(concat(stars.name, \':\', stars.id)) as stars_list, rating");
+    		query.append(" select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating");
     		query.append(" from movies, genres_in_movies, genres, stars, stars_in_movies, ratings");
     		query.append(" where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id");
     		query.append(" and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id");
@@ -130,6 +130,7 @@ public class SearchPage extends HttpServlet{
     		
     		// execute query
     		ResultSet resultSet = statement.executeQuery(query.toString());
+    		
     		
     		out.println("<body>");
     		out.println("<div class=\"title\">");
@@ -174,7 +175,7 @@ public class SearchPage extends HttpServlet{
     				String[] currentStar = starsList[i].split(":");
     				String starName = currentStar[0];
     				String starID = currentStar[1];
-    				starsHyperlinked += "<a href=\"/project1/starpage?starID="+starID+"\">"+starName+"</a>";
+    				starsHyperlinked += "<a href=\"/project1/starpage?starID="+ starID +"\">"+starName+"</a>";
     			}
     			
     			out.println("<tr>");
