@@ -77,7 +77,9 @@ public class SearchPage extends HttpServlet{
             int offsetCount = page * resultLimit;
     		
     		// Create urls for sorting re-direction 
-    		String base_url = request.getRequestURL().toString() + "?title=" + title + "&director=" 
+            String this_url = request.getRequestURL().toString();
+    	    String domain_url = this_url.substring(0, this_url.lastIndexOf("/") + 1);
+    		String base_url = this_url + "?title=" + title + "&director=" 
     				+ director + "&year=" + year + "&star-name=" + star_name;
     		
     		String url_title_ordered_asc = base_url + "&title-order=asc&rating-order=&page=" + page;
@@ -133,7 +135,7 @@ public class SearchPage extends HttpServlet{
     		out.println("<div class=\"title\">");
     		out.println("<h1>" + queryDesc + " </h1>");
     		out.println("</div>");
-    		out.println("<div class=\"block\">");
+    		out.println("<div class=\"block block__fat\">");
     		out.println("<table class=\"table table__black\">");
 
     		out.println("<thead>");
@@ -168,7 +170,8 @@ public class SearchPage extends HttpServlet{
     			out.println("<tr>");
                 out.println("<td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>");
     			out.println("<td>" + movieId + "</td>");
-    			out.println("<td>" + movieTitle + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
+    			out.println("<td> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 
+    					+ movieTitle + "</a><p class = \"hiddenText\">spacefillerspacefiller<p></td>");
     			out.println("<td>" + movieYear + "<p class = \"hiddenText\">spacefiller<p></td>");
     			out.println("<td>" + movieDir + "</td>");
     			out.println("<td>" + movieGenres + "</td>");

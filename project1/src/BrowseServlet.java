@@ -38,35 +38,36 @@ public class BrowseServlet extends HttpServlet {
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
         
     	
-    // Search Params
-    String genre = request.getParameter("genre");
-    String title = request.getParameter("title");
-	// Sorting params
-	String title_order = request.getParameter("title-order"),  rating_order = request.getParameter("rating-order");
-    // Page/nav params
-    int page = Integer.parseInt(request.getParameter("page"));
-    
-    String results = request.getParameter("results");
-    int resultLimit = 20;
-    if (results != null && !results.equals("")) {
-      resultLimit = Integer.parseInt(results); 
-    }
-    else
-    {
-    	results = "20";
-    }
-    int offsetCount = page * resultLimit;
-  
-	// Create urls for sorting re-direction 
-	String base_url = request.getRequestURL().toString() + "?title=" + title + "&genre=" 
-			+ genre;
-	
-	System.out.print(base_url);
-	
-	String url_title_ordered_asc = base_url + "&title-order=asc&rating-order=&page=" + page;
-	String url_rating_ordered_asc = base_url + "&title-order=&rating-order=asc&page=" + page;
-	String url_title_ordered_desc = base_url + "&title-order=desc&rating-order=&page=" + page;
-	String url_rating_ordered_desc = base_url + "&title-order=&rating-order=desc&page=" + page;
+	    // Search Params
+	    String genre = request.getParameter("genre");
+	    String title = request.getParameter("title");
+		// Sorting params
+		String title_order = request.getParameter("title-order"),  rating_order = request.getParameter("rating-order");
+	    // Page/nav params
+	    int page = Integer.parseInt(request.getParameter("page"));
+	    
+	    String results = request.getParameter("results");
+	    int resultLimit = 20;
+	    if (results != null && !results.equals("")) {
+	      resultLimit = Integer.parseInt(results); 
+	    }
+	    else
+	    {
+	    	results = "20";
+	    }
+	    int offsetCount = page * resultLimit;
+	  
+		// Create urls for sorting re-direction 
+	    String this_url = request.getRequestURL().toString();
+	    String domain_url = this_url.substring(0, this_url.lastIndexOf("/") + 1);
+		String base_url = this_url + "?title=" + title + "&genre=" 
+				+ genre;
+		
+		
+		String url_title_ordered_asc = base_url + "&title-order=asc&rating-order=&page=" + page;
+		String url_rating_ordered_asc = base_url + "&title-order=&rating-order=asc&page=" + page;
+		String url_title_ordered_desc = base_url + "&title-order=desc&rating-order=&page=" + page;
+		String url_rating_ordered_desc = base_url + "&title-order=&rating-order=desc&page=" + page;
 
 
         // HTML Generating
@@ -123,7 +124,6 @@ public class BrowseServlet extends HttpServlet {
         				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		}
     		
-    		System.out.println(query);
     		// execute query
     		ResultSet resultSet = statement.executeQuery(query);
     		
@@ -170,12 +170,13 @@ public class BrowseServlet extends HttpServlet {
     			out.println("<tr>");
                 out.println("<td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>");
     			out.println("<td>" + movieId + "</td>");
-    			out.println("<td>" + movieTitle + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
-    			out.println("<td>" + movieYear + "<p class = \"hiddenText\">spacefiller<p></td>");
+    			out.println("<td> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 
+    					+ movieTitle + "</a></td>");
+    			out.println("<td>" + movieYear + "</td>");
     			out.println("<td>" + movieDir + "</td>");
     			out.println("<td>" + movieGenres + "</td>");
     			out.println("<td>" + movieStars + "</td>");
-    			out.println("<td>" + movieRating + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
+    			out.println("<td>" + movieRating + "</td>");
     			out.println("</tr>");
     		}
     		out.println("</tbody>");
@@ -184,7 +185,7 @@ public class BrowseServlet extends HttpServlet {
     		// Pagination Navigation
     		String pageUrl = base_url + "&page=" + "&title-order=" + title_order + "&rating-order=" + rating_order;
     	    		
-    		out.println("<form action=\"http://localhost:8080/project1/browselist?page=" + Integer.toString(page) + "&genre=" + genre + "&title=" + title + "\">");
+    		out.println("<form action=\"/project1/browselist?page=" + Integer.toString(page) + "&genre=" + genre + "&title=" + title + "\">");
     		out.println("<select name=\"results\">");
     		out.println("<option value=\"10\">10</option>");
     		out.println("<option value=\"20\">20</option>");
