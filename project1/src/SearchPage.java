@@ -64,8 +64,17 @@ public class SearchPage extends HttpServlet{
     		String title_order = request.getParameter("title-order"),  rating_order = request.getParameter("rating-order");
             // Page/nav params
             int page = Integer.parseInt(request.getParameter("page"));
-            int movieLimit = 15; // limit number of movies displayed on any one page
-            int offsetCount = page * movieLimit;
+            
+            String results = request.getParameter("results");
+            int resultLimit = 20;
+            if (results != null && !results.equals("")) {
+               resultLimit = Integer.parseInt(results); 
+            }
+            else
+            {
+            	results = "20";
+            }
+            int offsetCount = page * resultLimit;
     		
     		// Create urls for sorting re-direction 
     		String base_url = request.getRequestURL().toString() + "?title=" + title + "&director=" 
@@ -115,7 +124,7 @@ public class SearchPage extends HttpServlet{
     			query.append( " order by rating " + rating_order);
     		}
     		
-    		query.append(" limit " + Integer.toString(movieLimit) + " offset " + Integer.toString(offsetCount) + ";");
+    		query.append(" limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";");
     		
     		// execute query
     		ResultSet resultSet = statement.executeQuery(query.toString());
@@ -174,16 +183,34 @@ public class SearchPage extends HttpServlet{
     		String pageUrl = base_url + "&page=" + "&title-order=" + title_order + "&rating-order=" + rating_order;
     		System.out.println(pageUrl);
     		
+    		out.println("<form action=\"" + pageUrl + "\">");
+    		out.println("<select name=\"results\">");
+    		out.println("<option value=\"10\">10</option>");
+    		out.println("<option value=\"20\">20</option>");
+    		out.println("<option value=\"50\">50</option>");
+    		out.println("<option value=\"100\">100</option>");
+    		out.println("</select>");
+    		out.println("<input type=\"submit\" value=\"view\">");
+    		out.println("<input type=\"hidden\" name=\"results\" value=\""+ results + "\">");
+    		out.println("<input type=\"hidden\" name=\"page\" value=\"0\">");
+    		out.println("<input type=\"hidden\" name=\"title\" value=\"" + title + "\">");
+    		out.println("<input type=\"hidden\" name=\"year\" value=\"" + year + "\">");
+    		out.println("<input type=\"hidden\" name=\"director\" value=\"" + director + "\">");
+    		out.println("<input type=\"hidden\" name=\"star-name\" value=\"" + star_name + "\">");
+    		out.println("<input type=\"hidden\" name=\"title-order\" value=\"" + title_order + "\">");
+    		out.println("<input type=\"hidden\" name=\"rating-order\" value=\"" + rating_order + "\">");
+    		out.println("</form>");
+    		
     		out.println("<nav aria-label=\"movie list page nav\">");
     		out.println("<ul class=\"pagination\">");
     		if (page > 0) { //not the first result page
         		out.println("<li class=\"page-item\">"
         				+ "<a class=\"page-link\" href=\""+ base_url + "&page=" + Integer.toString(page-1) 
-        				+ "&title-order=" + title_order + "&rating-order=" + rating_order + "\">Prev</a></li>");    			
+        				+ "&title-order=" + title_order + "&rating-order=" + rating_order + "&results=" + results + "\">Prev</a></li>");    			
     		}
     		out.println("<li class=\"page-item\">"
     				+ "<a class=\"page-link\" href=\"" + base_url + "&page=" + Integer.toString(page+1) 
-    				+ "&title-order=" + title_order + "&rating-order=" + rating_order + "\">Next</a></li>");
+    				+ "&title-order=" + title_order + "&rating-order=" + rating_order + "&results=" + results + "\">Next</a></li>");   
     		out.println("</ul>");
     		out.println("</nav>");
     		
