@@ -9,7 +9,6 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
-
     /**
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
      */
@@ -44,14 +43,7 @@ public class LoginFilter implements Filter {
                 || requestURI.endsWith("style.css") || requestURI.endsWith("background.jpg") ;
         
     }
-
-    /**
-     * We need to have these function because this class implements Filter.
-     * But we don’t need to put any code in them.
-     *
-     * @see Filter#init(FilterConfig)
-     */
-
+    
     public void init(FilterConfig fConfig) {
     }
 
