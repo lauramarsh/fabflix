@@ -51,17 +51,40 @@ public class SearchPage extends HttpServlet{
         		+ "<title>Fabflix: Search Results</title>"
         		+ "</head>");
         
-        
         try {
         	
     		Class.forName("com.mysql.jdbc.Driver").newInstance();
     		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
     		Statement statement = connection.createStatement();
     		
-    		
+    		// Query params
     		String title = request.getParameter("title"),  director = request.getParameter("director");
     		String year = request.getParameter("year"), star_name = request.getParameter("star-name");
-
+    		// Sorting params
+    		String title_order = request.getParameter("title-order"),  rating_order = request.getParameter("rating-order");
+            // Page/nav params
+            int page = Integer.parseInt(request.getParameter("page"));
+            
+            String results = request.getParameter("results");
+            int resultLimit = 20;
+            if (results != null && !results.equals("")) {
+               resultLimit = Integer.parseInt(results); 
+            }
+            else
+            {
+            	results = "20";
+            }
+            int offsetCount = page * resultLimit;
+    		
+    		// Create urls for sorting re-direction 
+    		String base_url = request.getRequestURL().toString() + "?title=" + title + "&director=" 
+    				+ director + "&year=" + year + "&star-name=" + star_name;
+    		
+    		String url_title_ordered_asc = base_url + "&title-order=asc&rating-order=&page=" + page;
+    		String url_rating_ordered_asc = base_url + "&title-order=&rating-order=asc&page=" + page;
+    		String url_title_ordered_desc = base_url + "&title-order=desc&rating-order=&page=" + page;
+    		String url_rating_ordered_desc = base_url + "&title-order=&rating-order=desc&page=" + page;
+    	
     		//Build query string 
     		    		
     		StringBuilder query = new StringBuilder();
@@ -69,7 +92,7 @@ public class SearchPage extends HttpServlet{
     		
     		queryDesc.append("Search Results");
     		
-    		query.append(" select title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating");
+    		query.append(" select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating");
     		query.append(" from movies, genres_in_movies, genres, stars, stars_in_movies, ratings");
     		query.append(" where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id");
     		query.append(" and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id");
@@ -77,26 +100,32 @@ public class SearchPage extends HttpServlet{
     		
     		
     		if(year.length() > 0)
-    		{
     			query.append(" and year = " +year);
-    		}
     		if(director.length() > 0) 
-    		{
     			query.append(" and director like '%" + director + "%'");
-    		}
     		
     		if(title.length() > 0)
-    		{
     			query.append(" and title like '%" + title + "%'");
-    		}
-    		
+   
     		query.append(" group by movies.id, title, rating, year, director");
     		
     		if(star_name.length() > 0) 
-    		{
     			query.append(" having stars_list like '%" + star_name + "%'");
+    		
+    		// Apply sorting: either by rating OR by title name 
+    		if(rating_order.length() == 0)
+    		{
+    			//sort by title 
+    			query.append( " order by title " + title_order);
     		}
-
+    		else if(title_order.length() == 0)
+    		{
+    			//sort by rating 
+    			query.append( " order by rating " + rating_order);
+    		}
+    		
+    		query.append(" limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";");
+    		
     		// execute query
     		ResultSet resultSet = statement.executeQuery(query.toString());
     		
@@ -104,24 +133,31 @@ public class SearchPage extends HttpServlet{
     		out.println("<div class=\"title\">");
     		out.println("<h1>" + queryDesc + " </h1>");
     		out.println("</div>");
-    		
     		out.println("<div class=\"block\">");
     		out.println("<table class=\"table table__black\">");
+
     		out.println("<thead>");
     		out.println("<tr>");
-    		out.println("<th>title</td>");
-    		out.println("<th>year</td>");
-    		out.println("<th>director</td>");
-    		out.println("<th>genres</td>");
-    		out.println("<th>stars</td>");
-    		out.println("<th>rating</td>");
+    		out.println("<th class = \"rowHead\"></td>");
+    		out.println("<th class = \"rowHead\">ID</td>");
+    		out.println("<th class = \"rowHead\">"
+    				+ "<a href=\"" + url_title_ordered_desc +"\" class = sortButton >&#9661</a> Title "
+    				+ "<a href=\""+ url_title_ordered_asc +"\" class = sortButton >&#9651</a></th>");
+    		out.println("<th  >Year</td>");
+    		out.println("<th>Director</td>");
+    		out.println("<th>Genres</td>");
+    		out.println("<th>Stars</td>");
+    		out.println("<th class = \"rowHead\">"
+    				+ "<a href=\"" + url_rating_ordered_desc +"\" class = sortButton >&#9661</a> Rating"
+    				+ "<a href=\""+ url_rating_ordered_asc +"\" class = sortButton >&#9651</a></th>");
     		out.println("</tr>");
     		out.println("</thead>");
-    		out.println("<tbody>");
-
     		
+    		out.println("<tbody>");
+    
     		while (resultSet.next()) {
     			// get a star from result set
+    			String movieId = resultSet.getString("movies.id");
     			String movieTitle = resultSet.getString("title");
     			String movieYear = resultSet.getString("year");
     			String movieDir = resultSet.getString("director");
@@ -130,18 +166,56 @@ public class SearchPage extends HttpServlet{
     			String movieRating = resultSet.getString("rating");
     			
     			out.println("<tr>");
-    			out.println("<td>" + movieTitle + "</td>");
-    			out.println("<td>" + movieYear + "</td>");
+                out.println("<td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>");
+    			out.println("<td>" + movieId + "</td>");
+    			out.println("<td>" + movieTitle + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
+    			out.println("<td>" + movieYear + "<p class = \"hiddenText\">spacefiller<p></td>");
     			out.println("<td>" + movieDir + "</td>");
     			out.println("<td>" + movieGenres + "</td>");
     			out.println("<td>" + movieStars + "</td>");
-    			out.println("<td>" + movieRating + "</td>");
+    			out.println("<td>" + movieRating + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
     			out.println("</tr>");
     		}
     		out.println("</tbody>");
     		out.println("</table>");
-    		out.println("</div>");
     		
+    		// Pagination Navigation
+    		String pageUrl = base_url + "&page=" + "&title-order=" + title_order + "&rating-order=" + rating_order;
+    		System.out.println(pageUrl);
+    		
+    		out.println("<form action=\"" + pageUrl + "\">");
+    		out.println("<select name=\"results\">");
+    		out.println("<option value=\"10\">10</option>");
+    		out.println("<option value=\"20\">20</option>");
+    		out.println("<option value=\"50\">50</option>");
+    		out.println("<option value=\"100\">100</option>");
+    		out.println("</select>");
+    		out.println("<input type=\"submit\" value=\"view\">");
+    		out.println("<input type=\"hidden\" name=\"results\" value=\""+ results + "\">");
+    		out.println("<input type=\"hidden\" name=\"page\" value=\"0\">");
+    		out.println("<input type=\"hidden\" name=\"title\" value=\"" + title + "\">");
+    		out.println("<input type=\"hidden\" name=\"year\" value=\"" + year + "\">");
+    		out.println("<input type=\"hidden\" name=\"director\" value=\"" + director + "\">");
+    		out.println("<input type=\"hidden\" name=\"star-name\" value=\"" + star_name + "\">");
+    		out.println("<input type=\"hidden\" name=\"title-order\" value=\"" + title_order + "\">");
+    		out.println("<input type=\"hidden\" name=\"rating-order\" value=\"" + rating_order + "\">");
+    		out.println("</form>");
+    		
+    		out.println("<nav aria-label=\"movie list page nav\">");
+    		out.println("<ul class=\"pagination\">");
+    		if (page > 0) { //not the first result page
+        		out.println("<li class=\"page-item\">"
+        				+ "<a class=\"page-link\" href=\""+ base_url + "&page=" + Integer.toString(page-1) 
+        				+ "&title-order=" + title_order + "&rating-order=" + rating_order + "&results=" + results + "\">Prev</a></li>");    			
+    		}
+    		out.println("<li class=\"page-item\">"
+    				+ "<a class=\"page-link\" href=\"" + base_url + "&page=" + Integer.toString(page+1) 
+    				+ "&title-order=" + title_order + "&rating-order=" + rating_order + "&results=" + results + "\">Next</a></li>");   
+    		out.println("</ul>");
+    		out.println("</nav>");
+    		
+    		
+    		out.println("</div>");
     		out.println("</body>");
     		
     		resultSet.close();

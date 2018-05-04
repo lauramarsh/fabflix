@@ -65,3 +65,32 @@ body {
 	font-size: 2em;
 	text-align: left;
 }
+
+button {
+    background: black;
+    border: black
+}
+
+*
+{
+	padding: 0px 15px;
+}
+
+
+.rowHead a {
+    color: white;
+    border-radius: 4px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    text-decoration: none !important;
+}
+
+td {
+	padding: 0px 15px !important;
+}
+
+tbody .hiddenText{
+	color: black;
+}
+
+
