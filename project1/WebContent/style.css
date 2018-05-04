@@ -22,6 +22,16 @@ body {
 	margin-top: 150px;
 }
 
+.block__fat {
+	padding-left: 200px;
+	padding-right: 200px;
+}
+
+.block__thin {
+	padding-left: 400px;
+	padding-right: 400px;
+}
+
 .browse {
 	width: 100%;
 }
@@ -32,10 +42,19 @@ body {
 	margin: 0 auto;
 }
 
+.movie {
+	display: flex;
+}
+
+.movie--poster {
+	width: 400px;
+	align-self: center;
+}
+
 .table__black {
 	background-color: black;
 	color: white;
-	width: 70%;
+	table-layout: fixed;
 }
 
 .title {
@@ -47,8 +66,9 @@ body {
 	font-size: 4em;
 }
 
-table {
-	background-color: black;
+.title > h2 {
+	font-size: 2em;
+	text-align: left;
 }
 
 button {
