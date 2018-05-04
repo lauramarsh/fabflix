@@ -103,7 +103,7 @@ public class BrowseServlet extends HttpServlet {
     		
     		if (genre != "") { //For browse genre selections
     			// QUERIES
-        		query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating "
+        		query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(concat(stars.name, \':\', stars.id)) as stars_list, rating "
         				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
         				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
@@ -113,7 +113,7 @@ public class BrowseServlet extends HttpServlet {
         				+ sortBy
         				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		} else { // For browse title selections
-    			query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct stars.name) as stars_list, rating "
+    			query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(concat(stars.name, \':\', stars.id)) as stars_list, rating "
         				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
         				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
@@ -137,7 +137,6 @@ public class BrowseServlet extends HttpServlet {
     		
     		// Movie list table
     		out.println("<table class=\"table table__black\">");
-
     		out.println("<thead>");
     		out.println("<tr>");
     		out.println("<th class = \"rowHead\"></td>");
@@ -154,9 +153,7 @@ public class BrowseServlet extends HttpServlet {
     				+ "<a href=\""+ url_rating_ordered_asc +"\" class = sortButton >&#9651</a></th>");
     		out.println("</tr>");
     		out.println("</thead>");
-    		
     		out.println("<tbody>");
-    
     		while (resultSet.next()) {
     			// get a star from result set
     			String movieId = resultSet.getString("movies.id");
@@ -164,19 +161,30 @@ public class BrowseServlet extends HttpServlet {
     			String movieYear = resultSet.getString("year");
     			String movieDir = resultSet.getString("director");
     			String movieGenres = resultSet.getString("genre_list");
-    			String movieStars = resultSet.getString("stars_list");
     			String movieRating = resultSet.getString("rating");
     			
+    			// Unload stars_list
+    			String movieStars = resultSet.getString("stars_list");
+    			String[] starsList = movieStars.split(","); // contains both star and id --> 'star:id'
+    			String starsHyperlinked = "";
+    			for(int i=0; i<starsList.length; i++) {
+    				String[] currentStar = starsList[i].split(":");
+    				String starName = currentStar[0];
+    				String starID = currentStar[1];
+    				starsHyperlinked += "<a href=\"/project1/starpage?starID="+starID+"\">"+starName+"</a>";
+    			}
+    			
+    			// Dynamic content
     			out.println("<tr>");
                 out.println("<td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>");
     			out.println("<td>" + movieId + "</td>");
-    			out.println("<td> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 
-    					+ movieTitle + "</a></td>");
-    			out.println("<td>" + movieYear + "</td>");
+    			out.println("<td class=\"link\"> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 
+    					+ movieTitle + "</a><p class = \"hiddenText\">spacefillerspacefiller<p></td>");
+    			out.println("<td>" + movieYear + "<p class = \"hiddenText\">spacefiller<p></td>");
     			out.println("<td>" + movieDir + "</td>");
     			out.println("<td>" + movieGenres + "</td>");
-    			out.println("<td>" + movieStars + "</td>");
-    			out.println("<td>" + movieRating + "</td>");
+    			out.println("<td class=\"link link__scroll\">" + starsHyperlinked + "</td>");
+    			out.println("<td>" + movieRating + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
     			out.println("</tr>");
     		}
     		out.println("</tbody>");
@@ -200,7 +208,6 @@ public class BrowseServlet extends HttpServlet {
     		out.println("<input type=\"hidden\" name=\"title-order\" value=\"" + title_order + "\">");
     		out.println("<input type=\"hidden\" name=\"rating-order\" value=\"" + rating_order + "\">");
     		out.println("</form>");
-
     		out.println("<nav aria-label=\"movie list page nav\">");
     		out.println("<ul class=\"pagination\">");
     		if (page > 0) { //not the first result page
@@ -213,8 +220,6 @@ public class BrowseServlet extends HttpServlet {
     				+ "&title-order=" + title_order + "&rating-order=" + rating_order + "&results=" + results + "\">Next</a></li>"); 
     		out.println("</ul>");
     		out.println("</nav>");
-    		
-    		
     		out.println("</div>");
     		out.println("</body>");
     		
