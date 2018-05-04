@@ -18,7 +18,11 @@
 	<div class="browse">
 		<div class="browse--items">
 			<div class="browse--page=0&genre">
-				<a href="http://localhost:8080/project1/browselist?page=0&genre=Action&title=" class="btn btn-danger">Action</a>
+				<input id="searchItem" name="title-order" type="hidden" value="">
+    		    <input id="searchItem" name="rating-order" type="hidden" value="DESC">
+    		    <input id="searchItem" name="page" type="hidden" value="0">
+
+				<a href="http://localhost:8080/project1/browselist?page=0&genre=Action&title=&title-order=&rating-order=desc" class="btn btn-danger">Action</a>
 				<a href="http://localhost:8080/project1/browselist?page=0&genre=Adult&title=" class="btn btn-danger">Adult</a>
 				<a href="http://localhost:8080/project1/browselist?page=0&genre=Adventure&title=" class="btn btn-danger">Adventure</a>
 				<a href="http://localhost:8080/project1/browselist?page=0&genre=Animation&title=" class="btn btn-danger">Animation</a>
