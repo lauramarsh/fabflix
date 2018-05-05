@@ -143,6 +143,7 @@ public class BrowseServlet extends HttpServlet {
     		out.println("<thead>");
     		out.println("<tr>");
     		out.println("<th class = \"rowHead\"></td>");
+    		out.println("<th class = \"rowHead\"></td>");
     		out.println("<th class = \"rowHead\">ID</td>");
     		out.println("<th class = \"rowHead\">"
     				+ "<a href=\"" + url_title_ordered_desc +"\" class = sortButton >&#9661</a> Title "
@@ -179,6 +180,7 @@ public class BrowseServlet extends HttpServlet {
     			
     			// Dynamic content
     			out.println("<tr>");
+        		out.println("<td><button class =\"btn btn-danger\" onclick = \"handleAdd()\" value=\"" + movieId + "\">Add To Cart</button></td>");
                 out.println("<td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>");
     			out.println("<td>" + movieId + "</td>");
     			out.println("<td class=\"link\"> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 
@@ -224,6 +226,8 @@ public class BrowseServlet extends HttpServlet {
     		out.println("</ul>");
     		out.println("</nav>");
     		out.println("</div>");
+    		out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>");
+    		out.println("<script src=\"./addMovie.js\"></script>");
     		out.println("</body>");
     		
     		resultSet.close();

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MovieServlet
@@ -40,7 +41,7 @@ public class MovieServlet extends HttpServlet {
         
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
+       
         // Get Movie ID parameter
         String movieTitle = request.getParameter("movie");
         
@@ -99,8 +100,8 @@ public class MovieServlet extends HttpServlet {
         		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
         		out.println("</div>");
         		out.println("<div class=\"title\">");
-        		out.println("<div class=\"title\">");
         		out.println("<h1>"+ movieTitle + "</h1>");
+        		out.println("<button  class =\"btn btn-danger\" onclick = \"handleAdd()\" value=\"" + movieID + "\">Add To Cart</button>");
         		out.println("</div>");
         		out.println("<div class=\"block block__thin\">");
         		out.println("<div class=\"movie\">");
@@ -122,8 +123,10 @@ public class MovieServlet extends HttpServlet {
     		out.println("</div>"); // movie--info
     		out.println("</div>"); // movie
     		
-    		
     		out.println("</div>"); // block
+    		
+    		out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>");
+    		out.println("<script src=\"./addMovie.js\"></script>");
     		out.println("</body>");
     		
     		
