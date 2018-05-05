@@ -135,6 +135,7 @@ public class SearchPage extends HttpServlet{
     		out.println("<body>");
     		out.println("<div class = \"cartLinks\">");
     		out.println("<a  id = \"backLink\" class =\"btn btn-danger\"  href = \"search.html\">Back to Search</a>");
+    		out.println("<a  class =\"btn btn-danger\"  href = \"/project1/cart\">View Cart</a>");
     		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
     		out.println("</div>");
     		out.println("<div class=\"title\">");
@@ -184,7 +185,7 @@ public class SearchPage extends HttpServlet{
     			}
     			
     			out.println("<tr>");
-        		out.println("<td><button class =\"btn btn-danger\" onclick = \"handleAdd()\" value=\"" + movieId + "\">Add To Cart</button></td>");
+        		out.println("<td><button class =\"btn btn-danger\" onclick = \"handleAdd(this)\" value=\"" + movieId + "\">Add To Cart</button></td>");
                 out.println("<td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>");
     			out.println("<td>" + movieId + "</td>");
     			out.println("<td class=\"link\"> <a href=\"" + domain_url + "moviepage?movie=" + movieTitle + "\">" 

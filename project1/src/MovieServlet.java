@@ -96,12 +96,12 @@ public class MovieServlet extends HttpServlet {
     			// Dynamic HTML
         		out.println("<body>");
         		out.println("<div class = \"cartLinks\">");
-        		out.println("<a  class =\"btn btn-danger\"  href = \"cart.html\">Checkout</a>");
+        		out.println("<a  class =\"btn btn-danger\"  href = \"/project1/cart\">View Cart</a>");
         		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
         		out.println("</div>");
         		out.println("<div class=\"title\">");
         		out.println("<h1>"+ movieTitle + "</h1>");
-        		out.println("<button  class =\"btn btn-danger\" onclick = \"handleAdd()\" value=\"" + movieID + "\">Add To Cart</button>");
+        		out.println("<button  class =\"btn btn-danger\" onclick = \"handleAdd(this)\" value=\"" + movieID + "\">Add To Cart</button>");
         		out.println("</div>");
         		out.println("<div class=\"block block__thin\">");
         		out.println("<div class=\"movie\">");

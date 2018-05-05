@@ -42,17 +42,18 @@ public class addMovie extends HttpServlet {
         
 	        @SuppressWarnings("unchecked")
 			Map<String, Integer> cart = (Map<String, Integer>) session.getAttribute("cart");
-	        if(cart == null) {
+	        /*if(cart == null) {
 	        	cart = new HashMap<String, Integer>();
 	        	session.setAttribute("cart", cart);
-	        }
+	        }*/
+	        
 	        String movieId = request.getParameter("movie-id");       
 	        
 	        if(movieId != null){
 	        	cart.put(movieId, cart.getOrDefault(movieId, 0)+1);
 	        }
 	        
-	        System.out.print(cart);
+	        System.out.println("CART " + cart);
         }
         
 	}
