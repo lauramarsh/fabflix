@@ -50,7 +50,6 @@ public class LoginServlet extends HttpServlet {
 			
 			// no such user
 	        if(resultSet.next() == false){
-	        	System.out.println("no user");
 	        	JsonObject responseJsonObject = new JsonObject();
 	            responseJsonObject.addProperty("status", "fail");
 	            responseJsonObject.addProperty("message", "user " + username + " doesn't exist");
@@ -59,7 +58,6 @@ public class LoginServlet extends HttpServlet {
 	        }
 	        else if (!resultSet.getString("password").equals(password))
 	        {
-	        	System.out.println("bad pw");
 	        	JsonObject responseJsonObject = new JsonObject();
 	            responseJsonObject.addProperty("status", "fail");
 	        	responseJsonObject.addProperty("message", "incorrect password");
@@ -68,7 +66,6 @@ public class LoginServlet extends HttpServlet {
 	        }
 	        else
 	        {
-	        	System.out.println("all goood");
 	        	// set this user into the session
 	            request.getSession().setAttribute("user", new User(username));
 
