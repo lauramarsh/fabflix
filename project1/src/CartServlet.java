@@ -68,29 +68,44 @@ public class CartServlet extends HttpServlet {
 	    		out.println("</thead>");
 	    		
 	    		out.println("<tbody>");
-	    		for (Map.Entry<String, Integer> entry: userCart.entrySet()) {
-	    			System.out.println("_________MADE IT IN");
-	    			System.out.println(entry.getKey());
-	    			System.out.println(entry.getValue());
-
-	    			// Query 
-	        		String query = "select title from movies where id='" + entry.getKey() + "';";
-	        		// ResultSet should be 1 movie, resultSet.next() is null
-	        		ResultSet resultSet = statement.executeQuery(query);
-	        		
-	        		String cartMovieTitle = "";
-	        		while(resultSet.next()) {
-	        			cartMovieTitle = resultSet.getString("title");
-	        		}
-	        		out.println("<tr><td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>"
-	    					+ "<td>" + cartMovieTitle + "</td>"
-	    					+ "<td class=\"quantity\">"
-	    					+ "<input type=\"text\" name=\"name\" value=\"" + entry.getValue() + "\">"
-	    					+ "<input type=\"submit\" class=\"btn btn-warning btn--plus\" value=\"edit\">"
-	    					+ "<button class=\"btn btn-danger btn--plus\" type=\"button\" name=\"button\">X</button>"
-	    					+ "</td></tr>");
+	    		if(userCart.isEmpty()) {
+	    			out.println("<tr><td></td><td>Cart is empty!</td><td></td></tr>");
+	    		}else {
+		    		for (Map.Entry<String, Integer> entry: userCart.entrySet()) {
+		    			String movieID = entry.getKey();
+		    			int movieQuant = entry.getValue();
+		    			
+		    			// Query 
+		        		String query = "select title from movies where id='" + movieID + "';";
+		        		// ResultSet should be 1 movie, resultSet.next() is null
+		        		ResultSet resultSet = statement.executeQuery(query);
+		        		
+		        		String cartMovieTitle = "";
+		        		while(resultSet.next()) {
+		        			cartMovieTitle = resultSet.getString("title");
+		        		}
+		        		out.println("<tr><td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>"
+		    					+ "<td>" + cartMovieTitle + "</td>"
+		    					+ "<td class=\"quantity\">"
+		    					+ "<input type=\"text\" name=\"name\" id=\"inputQuant\" value=\"" + Integer.toString(movieQuant) + "\">"
+		    					+ "<input type=\"hidden\" id=\"inputMovieID\" value=\""+ movieID + "\">"
+		    					+ "<input type=\"submit\" name=\"submit\" class=\"btn btn-warning btn--plus\" onclick=\"handleEdit(this)\" value=\"edit\">"
+		    					+ "<button class=\"btn btn-danger btn--plus\" type=\"button\" name=\"button\" onclick=\"handleDelete(this)\">X</button>"
+		    					+ "</td></tr>");
+		        		
+		        		resultSet.close();
+		    		}
 	    		}
+	    		
 	    		out.println("</tbody>");
+	    		out.println("<a  class =\"btn btn-danger\"  href = \"checkout.html\">Check Out</a>");
+
+	    		out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>");
+	    		out.println("<script src=\"./addMovie.js\"></script>");
+	    		out.println("</body>");
+	    		
+	    		statement.close();
+	    		connection.close();
 	    	
 	        } catch (Exception e) {
 	        	e.printStackTrace();
