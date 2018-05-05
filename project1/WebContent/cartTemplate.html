@@ -8,6 +8,7 @@
 	<!-- BootStrap CSS -->
 	<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
 	<title>cartTemplate.html</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 	<div class="block block__thin">
@@ -28,9 +29,11 @@
 						<td><img src="GenericMoviePoster.jpg" alt="" border=3 height=200 width=150></img></td>
 						<td>Name of Movie</td>
 						<td class="quantity">
-							<button class="btn btn--minus" type="button" name="button">-</button>
-							<input type="text" name="name" value="1">
-							<button class="btn btn--plus" type="button" name="button">+</button>
+							<button class="btn btn-warning btn--minus" type="button" name="button">-</button>
+							<h5>1</h5>
+							<button class="btn btn-warning btn--plus" type="button" name="button">+</button>
+							<button class="btn btn-danger btn--plus" type="button" name="button">X</button>
+						
 						</td>
 					</tr>
 				</tbody>

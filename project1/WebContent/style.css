@@ -91,16 +91,6 @@ body {
 	text-align: left;
 }
 
-button {
-    background: black;
-    border: black
-}
-
-*
-{
-	padding: 0px 15px;
-}
-
 .rowHead a {
     color: white;
     border-radius: 4px !important;
@@ -136,4 +126,13 @@ input {
 	margin-top: 100px;
 }
 
+.quantity {
+	display: flex;
+    margin-top: 20px;
+    border-top: none !important;
+}
+
+.quantity > h5 {
+	width: 100px;
+}
 
