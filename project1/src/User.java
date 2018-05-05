@@ -3,7 +3,7 @@ import java.util.*;
 public class User {
 
     private final String username;
-    private Map<Integer, Integer> cart = new HashMap<Integer, Integer>();
+    private Map<String, Integer> cart = new HashMap<String, Integer>();
 
     public User(String username) {
         this.username = username;
@@ -13,7 +13,7 @@ public class User {
         return this.username;
     }
    
-    public void addToCart(int movieId, int quantity) {
+    public void addToCart(String movieId, int quantity) {
     	// add the specified quanity to the cart
     	// if < 0 remove item
     	if(quantity < 0) {
@@ -24,13 +24,13 @@ public class User {
     	}
     }
     
-    public void removeFromCart(int movieId){
+    public void removeFromCart(String movieId){
     	// - 1 to the quantity of the specified movie 
     	// If movie was not in the cart, set default quantity to 0 and then add 1
     	this.cart.remove(movieId);
     }
     
-    public Map<Integer, Integer> getCart(){
+    public Map<String, Integer> getCart(){
     	return this.cart;
     }
     
