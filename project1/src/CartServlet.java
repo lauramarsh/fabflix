@@ -74,7 +74,12 @@ public class CartServlet extends HttpServlet {
         		}
         		out.println("<tr><td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>"
     					+ "<td>" + cartMovieTitle + "</td>"
-    					+ "<td>" + Integer.toString(entry.getValue()) + "</td></tr>");
+    					+ "<td class=\"quantity\">"
+    					+ "<button class=\"btn btn-warning btn--minus\" type=\"button\" name=\"button\">-</button>"
+    					+ "<h5>" + Integer.toString(entry.getValue()) + "</h5>"
+    					+ "<button class=\"btn btn-warning btn--plus\" type=\"button\" name=\"button\">+</button>"
+    					+ "<button class=\"btn btn-danger btn--plus\" type=\"button\" name=\"button\">X</button>"
+    					+ "</td></tr>");
     		}
     		out.println("</tbody>");
     	
