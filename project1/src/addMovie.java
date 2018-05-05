@@ -37,16 +37,24 @@ public class addMovie extends HttpServlet {
 
         
         //Get User shopping cart info
-        HttpSession session = request.getSession(true); // Get a instance of current session on the request
+        HttpSession session = request.getSession(); // Get a instance of current session on the request
+        synchronized(session) {
         
-        Map<String, Integer> cart = (Map<String, Integer>) session.getAttribute("cart");
-        if(cart == null) {
-        	cart = new HashMap<String, Integer>();
-        	session.setAttribute("cart", cart);
+	        @SuppressWarnings("unchecked")
+			Map<String, Integer> cart = (Map<String, Integer>) session.getAttribute("cart");
+	        if(cart == null) {
+	        	cart = new HashMap<String, Integer>();
+	        	session.setAttribute("cart", cart);
+	        }
+	        String movieId = request.getParameter("movie-id");       
+	        
+	        if(movieId != null){
+	        	cart.put(movieId, cart.getOrDefault(movieId, 0)+1);
+	        }
+	        
+	        System.out.print(cart);
         }
-       
-        String movieId = request.getParameter("movie-id");  
-      
+        
 	}
 
 	/**

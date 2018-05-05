@@ -4,10 +4,10 @@
 function handleAdd(result) {
 	
 	console.log(result)
-	var movieId = result.getAttribute("value");
+	//var movieId = result.getAttribute("value");
 	
     console.log("click");
-    console.log(movieId);
+    console.log(result);
     
     $.ajax({
     	method: "GET", 
