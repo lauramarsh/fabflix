@@ -30,6 +30,12 @@ public class User {
     	this.cart.remove(movieId);
     }
     
+    public int getCount(int movieId){
+    	// - 1 to the quantity of the specified movie 
+    	// If movie was not in the cart, set default quantity to 0 and then add 1
+    	return this.cart.get(movieId);
+    }
+    
     public Map<Integer, Integer> getCart(){
     	return this.cart;
     }
