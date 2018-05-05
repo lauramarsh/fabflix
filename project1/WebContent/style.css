@@ -47,6 +47,10 @@ body {
 	margin: 0 auto;
 }
 
+.cart {
+	margin-top: 150px;
+}
+
 .link {
 	text-decoration: none;
 	display: grid;
@@ -83,7 +87,7 @@ body {
 }
 
 .title > h2 {
-	font-size: 2em;
+	font-size: 4em;
 	text-align: left;
 }
 

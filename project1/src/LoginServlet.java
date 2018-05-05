@@ -1,4 +1,5 @@
 import com.google.gson.JsonObject;
+import java.util.*;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -68,6 +69,7 @@ public class LoginServlet extends HttpServlet {
 	        {
 	        	// set this user into the session
 	            request.getSession().setAttribute("user", new User(username));
+	            request.getSession().setAttribute("cart", new HashMap<String,Integer>());
 
 	            JsonObject responseJsonObject = new JsonObject();
 	            responseJsonObject.addProperty("status", "success");
