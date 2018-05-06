@@ -109,7 +109,7 @@ public class BrowseServlet extends HttpServlet {
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
         				+ "and movies.id = ratings.movieId "
         				+ "group by movies.id, title, rating, year, director "
-        				+ "having genre_list like '%" + genre + "%' "
+        				+ "and genres.name like '%" + genre + "%' "
         				+ sortBy
         				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		} else { // For browse title selections
@@ -119,7 +119,7 @@ public class BrowseServlet extends HttpServlet {
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
         				+ "and movies.id = ratings.movieId "
         				+ "group by movies.id, title, rating, year, director "
-        				+ "having title like '" + title + "%' "
+        				+ "and title like '" + title + "%' "
         				+ sortBy
         				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		}
@@ -128,10 +128,7 @@ public class BrowseServlet extends HttpServlet {
     		ResultSet resultSet = statement.executeQuery(query);
     		
     		out.println("<body>");
-    		out.println("<div class = \"cartLinks\">");
-    		out.println("<a  class =\"btn btn-danger\"  href = \"/project1/cart\">View Cart</a>");
-    		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
-    		out.println("</div>");
+    		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"cart\">cart</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
     		out.println("<div class=\"title\">");
     		out.println("<h1>" + genre + title + " Movies</h1>");
     		out.println("</div>");

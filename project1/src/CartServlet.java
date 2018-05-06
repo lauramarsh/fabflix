@@ -52,6 +52,7 @@ public class CartServlet extends HttpServlet {
 	        out.println("<html>");
 	        out.println("<head><title>Fabflix Movie Page</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\"/></head>");
 	        out.println("<body>");
+    		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
 	        
 	        try {
 	    		Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -60,17 +61,25 @@ public class CartServlet extends HttpServlet {
 	    		
 	    		out.println("<div class=\"block block__thin\">");
 	    		out.println("<div class=\"title\"><h2>Cart</h2></div>");
-	    		out.println("<div class=\"cart\">");
-	    		out.println("<table class=\"table table__black\">");
 	    		
-	    		out.println("<thead>");
-	    		out.println("<tr><th></th><th>Title</th><th>Quantity</th></tr>");
-	    		out.println("</thead>");
-	    		
-	    		out.println("<tbody>");
 	    		if(userCart.isEmpty()) {
-	    			out.println("<tr><td></td><td>Cart is empty!</td><td></td></tr>");
+	    			out.println("<h3 class=\"title\">Cart is empty!</h3>");
 	    		}else {
+	    			
+	    			// Checkout Button
+		    		out.println("<a  class =\"btn btn-danger\"  href = \"checkout.html\">Check Out</a>");
+		    		
+		    		// Cart is not empty
+		    		out.println("<div class=\"cart\">");
+		    		out.println("<table class=\"table table__black\">");
+		    		
+		    		out.println("<thead>");
+		    		out.println("<tr><th></th><th>Title</th><th>Quantity</th></tr>");
+		    		out.println("</thead>");
+		    		
+		    		out.println("<tbody>");
+		    		
+	    			int indexCount = 0;
 		    		for (Map.Entry<String, Integer> entry: userCart.entrySet()) {
 		    			String movieID = entry.getKey();
 		    			int movieQuant = entry.getValue();
@@ -87,18 +96,18 @@ public class CartServlet extends HttpServlet {
 		        		out.println("<tr><td><img src=\"GenericMoviePoster.jpg\" alt=\"\" border=3 height=200 width=150></img></td>"
 		    					+ "<td>" + cartMovieTitle + "</td>"
 		    					+ "<td class=\"quantity\">"
-		    					+ "<input type=\"text\" name=\"name\" id=\"inputQuant\" value=\"" + Integer.toString(movieQuant) + "\">"
-		    					+ "<input type=\"hidden\" id=\"inputMovieID\" value=\""+ movieID + "\">"
-		    					+ "<input type=\"submit\" name=\"submit\" class=\"btn btn-warning btn--plus\" onclick=\"handleEdit(this)\" value=\"edit\">"
-		    					+ "<button class=\"btn btn-danger btn--plus\" type=\"button\" name=\"button\" onclick=\"handleDelete(this)\">X</button>"
+		    					+ "<input class=\"quantInput\" type=\"text\" name=\"name\" value=\"" + Integer.toString(movieQuant) + "\">"
+		    					+ "<input class=\"movieId\" type=\"hidden\" value=\""+ movieID + "\">"
+		    					+ "<button type=\"button\" name=\"" + Integer.toString(indexCount) + "\" class=\"btn btn-warning btn--plus\" onclick=\"handleEdit(this)\">edit</button>"
+		    					+ "<button class=\"btn btn-danger btn--plus\" type=\"button\" name=\"" + Integer.toString(indexCount) + "\" onclick=\"handleDelete(this)\">X</button>"
 		    					+ "</td></tr>");
 		        		
 		        		resultSet.close();
+		        		indexCount++;
 		    		}
 	    		}
 	    		
 	    		out.println("</tbody>");
-	    		out.println("<a  class =\"btn btn-danger\"  href = \"checkout.html\">Check Out</a>");
 
 	    		out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>");
 	    		out.println("<script src=\"./addMovie.js\"></script>");

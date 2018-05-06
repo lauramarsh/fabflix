@@ -77,15 +77,13 @@ public class StarServlet extends HttpServlet {
     			    			
     			// Dynamic HTML
         		out.println("<body>");
-        		out.println("<div class = \"cartLinks\">");
-        		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
-        		out.println("</div>");
+        		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"cart\">cart</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
         		out.println("<div class=\"title\">");
         		out.println("<h1>"+ starName + "</h1>");
         		out.println("</div>");
         		out.println("<div class=\"block block__thin\">");
         		out.println("<div class=\"movie\">");
-        		out.println("<img class=\"movie--poster\" src=\"GenericMoviePoster.jpg\">");
+        		out.println("<img class=\"movie--poster\" src=\"kona.jpg\">");
         		out.println("<div class=\"movie--info\">");
         		out.println("<table class=\"table table__black\">");
         		out.println("<tbody>");

@@ -91,6 +91,11 @@ body {
 	text-align: left;
 }
 
+.title > h3 {
+	font-size: 3em;
+	text-align: left
+}
+
 .rowHead a {
     color: white;
     border-radius: 4px !important;
@@ -118,6 +123,16 @@ tbody .hiddenText{
 
 input {
 	color: black !important;
+}
+
+.nav-bar {
+	position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+	text-align: right;
+	padding: 10px;
+	display: block;
 }
 
 .cartLinks #backLink{

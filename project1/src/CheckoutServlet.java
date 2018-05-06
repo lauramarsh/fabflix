@@ -80,12 +80,9 @@ public class CheckoutServlet extends HttpServlet{
     		
     		if(resultSet.next() == false){
     			out.println("<body>");
-        		out.println("<div class = \"cartLinks\">");
-        		out.println("<a  id = \"backLink\" class =\"btn btn-danger\"  href = \"/project1/cart\">Back to Cart</a>");
-        		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
+        		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"cart\">cart</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
         		
         		out.println("<h1> Error with payment. Unable to complete request.</h1>");
-        		out.println("</body>");
  	        }
     		else {
     			
@@ -105,15 +102,16 @@ public class CheckoutServlet extends HttpServlet{
     		    		String customerId = rs.getString("id");
     		    		
     		    		String insertQuery = "insert into sales (id, customerId, movieId, saleDate)" 
-    		    			+ " values (default, " + customerId + ", " + item + ",CURDATE());";
+    		    			+ " values (default, '" + customerId + "', '" + item + "',CURDATE());";
+    		    		
+    		    		System.out.println(insertQuery);
     		    		
     		    		// execute query
-    		    		int is = statement.executeUpdate(insertQuery);
+    		    		statement.executeUpdate(insertQuery);
     		    		
     		    		out.println("<body>");
     	        		out.println("<div class = \"cartLinks\">");
-    	        		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
-    	        		out.println("<h2> Thank you for your purchase!</h2>");
+    	        		out.println("<div class=\"title\"><h1> Thank you for your purchase!</h1></div>");
     	        		out.println("</body>");
     				}
     			}
@@ -121,13 +119,11 @@ public class CheckoutServlet extends HttpServlet{
         		out.println("<div class = \"cartLinks\">");
         		out.println("<a  id = \"backLink\" class =\"btn btn-danger\"  href = \"/project1/cart\">Back to Cart</a>");
         		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
-        		out.println("</body>");
     			
     		}
     	
     
     		out.println("</body>");
-    		out.println("</head>");
     		
     		resultSet.close();
     		statement.close();

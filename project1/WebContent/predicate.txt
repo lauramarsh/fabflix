@@ -1,0 +1,8 @@
+
+Substring Matching for Search
+For search queries we chose to use the following pattern : LIKE ‘% query %’, 
+so that a user can type in a keyword for a movie, star name, or director and have values return for any entry containing their query.  
+
+Substring Matching for Browse
+For browse queries we used the following pattern : LIKE ‘Letter&’, 
+so that a user can query the list of movies for movies beginning with a specific letter. 

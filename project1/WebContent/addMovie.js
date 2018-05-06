@@ -21,35 +21,47 @@ function handleAdd(result) {
 
 function handleEdit(result) {
 	console.log(result)
-	var newQuant = document.getElementById('inputQuant').value;
-	var movieId = document.getElementById('inputMovieID').value;
+	var movies = document.getElementsByClassName("movieId");
+	var quants = document.getElementsByClassName("quantInput");
+	var index = result.getAttribute("name");
+	var curMovie = movies[index].value;
+	var newQuant = quants[index].value;
 	
     console.log("click");
-    console.log(movieId);
+    console.log(curMovie);
     console.log(newQuant);
     
+    if (parseInt(newQuant) > 0) {
+    	$.ajax({
+        	method: "GET", 
+        	url: "/project1/editMovie", 
+        	data: {"movie-id": curMovie, "movie-quant": newQuant}
+        });
+        
+        window.location.reload(true);
+    } 
+    else {
+    	console.log
+    	window.alert("Please enter a valid number (more than 0)!");
+    	window.location.reload(false);
+    }
     
-    $.ajax({
-    	method: "GET", 
-    	url: "/project1/editMovie", 
-    	data: {"movie-id": movieId, "movie-quant": newQuant}
-    });
     
-    window.location.reload(true);
 }
 
 function handleDelete(result) {
 	console.log(result)
-	var movieId = document.getElementById('inputMovieID').value;
+	var movies = document.getElementsByClassName("movieId");	
+	var index = result.getAttribute("name");
 	
-    console.log("click");
-    console.log(movieId);
+	console.log("click");
+    console.log(movies[index].value);
     
     
     $.ajax({
     	method: "GET", 
     	url: "/project1/deleteMovie", 
-    	data: {"movie-id": movieId}
+    	data: {"movie-id": movies[index].value}
     });
     
     window.location.reload(true);
