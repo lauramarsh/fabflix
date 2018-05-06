@@ -77,16 +77,18 @@ public class CheckoutServlet extends HttpServlet{
     		
     		// execute query
     		ResultSet resultSet = statement.executeQuery(query.toString());
+    		out.println("<body>");
+    		out.println("<div class=\"nav-bar table__black\"><a  class \"btn btn-warning\"  href = \"index.html\">home</a><a  class \"btn btn-warning\"  href = \"cart\">cart</a><a  class \"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
+    		
+    		boolean success = false;
+    		String customerId =" ";
     		
     		if(resultSet.next() == false){
-    			out.println("<body>");
-        		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"cart\">cart</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
-        		
-        		out.println("<h1> Error with payment. Unable to complete request.</h1>");
+        		out.println("<h1 class=\"title\"> Error with payment. Unable to complete request.</h1>");
  	        }
     		else {
-    			
-    			int total =  0;
+
+    			success = true;
     			for(String item: cart.keySet()) {
     				for(int i = 0; i < cart.get(item); i++) {
     					
@@ -99,27 +101,53 @@ public class CheckoutServlet extends HttpServlet{
     		    		ResultSet rs = statement.executeQuery(idQuery);
     					
     		    		rs.next();
-    		    		String customerId = rs.getString("id");
+    		    		customerId = rs.getString("id");
     		    		
     		    		String insertQuery = "insert into sales (id, customerId, movieId, saleDate)" 
     		    			+ " values (default, '" + customerId + "', '" + item + "',CURDATE());";
-    		    		
-    		    		System.out.println(insertQuery);
-    		    		
+    		    		    		    		
     		    		// execute query
     		    		statement.executeUpdate(insertQuery);
+    		    	
     		    		
-    		    		out.println("<body>");
-    	        		out.println("<div class = \"cartLinks\">");
-    	        		out.println("<div class=\"title\"><h1> Thank you for your purchase!</h1></div>");
-    	        		out.println("</body>");
     				}
+    				
+	        		
     			}
-    			out.println("<body>");
-        		out.println("<div class = \"cartLinks\">");
-        		out.println("<a  id = \"backLink\" class =\"btn btn-danger\"  href = \"/project1/cart\">Back to Cart</a>");
-        		out.println("<a  class =\"btn btn-danger\"  href = \"login.html\">Log Out </a>");
     			
+    			if(success)
+    			{
+    				
+            		
+            		String saleQuery = "select id from sales where customerId ='" + customerId  + "' and saleDate = CURDATE()";
+            		ResultSet rs = statement.executeQuery(saleQuery);
+            		rs.next();
+            		
+            		out.println("<div class=\"title\"><h1> Thank you for your purchase!</h1></div>");
+            		out.println("<div class=\"confirm\"><h3>Order Details:</h3></div>");
+            		
+            		
+		    		String saleId = rs.getString("id");
+            		
+        			for(Map.Entry<String, Integer> e: cart.entrySet()) {
+        					String movieId = e.getKey();
+        					Integer amount = e.getValue();
+        					
+        					String movieQuery = "select title from movies where id ='" + movieId + "';";
+        					
+        					rs = statement.executeQuery(movieQuery);
+        					rs.next();
+        		    		String title = rs.getString("title");
+        		    		
+        		    		String order = "Movie: " + title + "&nbsp;&nbsp;&nbsp;&nbsp; Quantity: " + amount;
+        	        		out.println("<div class=\"confirm\"><h3>" + order + "</h3></div>");
+        					
+        				}
+        			out.println("<div class=\"confirm\"><h3>Sale ID: "+ saleId +"</h3></div>");
+    				
+    			}
+    			
+    	
     		}
     	
     
