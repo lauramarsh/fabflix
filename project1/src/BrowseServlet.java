@@ -162,8 +162,15 @@ public class BrowseServlet extends HttpServlet {
     			String movieTitle = resultSet.getString("title");
     			String movieYear = resultSet.getString("year");
     			String movieDir = resultSet.getString("director");
-    			String movieGenres = resultSet.getString("genre_list");
     			String movieRating = resultSet.getString("rating");
+    			
+    			// Unload genres
+    			String movieGenres = resultSet.getString("genre_list");
+    			String[] genres = movieGenres.split(",");
+    			String genresSeparated = "";
+    			for(int i=0; i<genres.length; i++) {
+    				genresSeparated += "<p>" + genres[i] + "</p>";
+    			}
     			
     			// Unload stars_list
     			String movieStars = resultSet.getString("stars_list");
@@ -185,7 +192,7 @@ public class BrowseServlet extends HttpServlet {
     					+ movieTitle + "</a><p class = \"hiddenText\">spacefillerspacefiller<p></td>");
     			out.println("<td>" + movieYear + "<p class = \"hiddenText\">spacefiller<p></td>");
     			out.println("<td>" + movieDir + "</td>");
-    			out.println("<td>" + movieGenres + "</td>");
+    			out.println("<td>" + genresSeparated + "</td>");
     			out.println("<td class=\"link link__scroll\">" + starsHyperlinked + "</td>");
     			out.println("<td>" + movieRating + "<p class = \"hiddenText\">spacefillerspacefiller<p></td>");
     			out.println("</tr>");
