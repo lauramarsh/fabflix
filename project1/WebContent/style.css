@@ -154,3 +154,8 @@ input {
 .confirm h3{
 	color: white !important;
 }
+
+.g-recaptcha {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
