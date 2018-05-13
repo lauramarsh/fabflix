@@ -24,13 +24,30 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	
     	// TODO Auto-generated method stub
+        PrintWriter out = response.getWriter();
+
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+
+        // Verify reCAPTCHA
+        try {
+            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+        } catch (Exception e) {
+            out.println("<html>");
+            out.println("<head><title>Error</title></head>");
+            out.println("<body>");
+            out.println("<p>recaptcha verification error</p>");
+            out.println("<p>" + e.getMessage() + "</p>");
+            out.println("</body>");
+            out.println("</html>");
+            
+            out.close();
+            return;
+        }
 		
     			String loginUser = "root";
     	        String loginPasswd = "pissoff";
     	        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
-
-    	        
-    	        
     	        
         try {
         	
