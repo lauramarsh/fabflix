@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Map;
@@ -102,35 +103,48 @@ public class SearchPage extends HttpServlet{
     		
     		
     		if(year.length() > 0)
-    			query.append(" and year = " +year);
+    			query.append(" and year = ?");
     		if(director.length() > 0) 
-    			query.append(" and director like '%" + director + "%'");
-    		
+    			query.append(" and director like ?");
     		if(title.length() > 0)
-    			query.append(" and title like '%" + title + "%'");
+    			query.append(" and title like ?");
    
     		query.append(" group by movies.id, title, rating, year, director");
     		
     		if(star_name.length() > 0) 
-    			query.append(" having stars_list like '%" + star_name + "%'");
+    			query.append(" having stars_list like ?");
     		
     		// Apply sorting: either by rating OR by title name 
     		if(rating_order.length() == 0)
-    		{
     			//sort by title 
     			query.append( " order by title " + title_order);
-    		}
     		else if(title_order.length() == 0)
-    		{
     			//sort by rating 
     			query.append( " order by rating " + rating_order);
-    		}
     		
     		query.append(" limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";");
     		
-    		// execute query
-    		ResultSet resultSet = statement.executeQuery(query.toString());
+    		System.out.println(query.toString()); 
+    		// create prepared statement
+    		PreparedStatement preparedStatement =
+    		        connection.prepareStatement(query.toString());
+
+    		int setCounter = 1;
+    		if(year.length() > 0) {
+    			preparedStatement.setString(setCounter++, year);
+    		}
+    		if(director.length() > 0) {
+    			preparedStatement.setString(setCounter++, "%" + director + "%");
+    		}
+    		if(title.length() > 0) {
+    			preparedStatement.setString(setCounter++, "%" + title + "%");
+    		}
+    		if(star_name.length() > 0) {
+    			preparedStatement.setString(setCounter++, "%" + star_name + "%");
+    		}
     		
+    		// execute query
+    		ResultSet resultSet = preparedStatement.executeQuery();
     		
     		out.println("<body>");
     		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"cart\">cart</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
