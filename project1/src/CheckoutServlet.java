@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Map;
@@ -69,14 +70,23 @@ public class CheckoutServlet extends HttpServlet{
     		StringBuilder query = new StringBuilder();
     	    		
     		query.append(" select * from creditcards where");
-    		query.append(" id ='" + card_num + "'");
-    		query.append(" and firstName = '" + first_name + "'");
-    		query.append(" and lastName = '" + last_name + "'");
-    		query.append(" and expiration = '" + exp_date + "'");    		
-    	
+    		query.append(" id = ? ");
+    		query.append(" and firstName = ? ");
+    		query.append(" and lastName = ? ");
+    		query.append(" and expiration = ? ");    
+    		 
+    		// create prepared statement
+    		PreparedStatement preparedStatement =
+    		        connection.prepareStatement(query.toString());
+ 
+    		preparedStatement.setString(1, card_num);
+    		preparedStatement.setString(2, first_name);
+    		preparedStatement.setString(3, last_name);
+    		preparedStatement.setString(4, exp_date);
     		
     		// execute query
-    		ResultSet resultSet = statement.executeQuery(query.toString());
+    		ResultSet resultSet = preparedStatement.executeQuery();
+    		
     		out.println("<body>");
     		out.println("<div class=\"nav-bar table__black\"><a  class \"btn btn-warning\"  href = \"index.html\">home</a><a  class \"btn btn-warning\"  href = \"cart\">cart</a><a  class \"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
     		
