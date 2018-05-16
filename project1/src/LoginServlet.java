@@ -12,6 +12,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 //
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -60,39 +62,53 @@ public class LoginServlet extends HttpServlet {
 	       
 	        StringBuilder query = new StringBuilder();
 	        
-	        query.append("select email,password from customers where email = '"+username+"'");
+	        query.append("select * from customers where email = '"+username+"'");
 	 
 	        
 			// execute query
 			ResultSet resultSet = statement.executeQuery(query.toString());
 			
 			// no such user
-	        if(resultSet.next() == false){
+	        if(resultSet.next() == false)
+	        {
 	        	JsonObject responseJsonObject = new JsonObject();
 	            responseJsonObject.addProperty("status", "fail");
 	            responseJsonObject.addProperty("message", "user " + username + " doesn't exist");
 	           
 	            response.getWriter().write(responseJsonObject.toString());
 	        }
-	        else if (!resultSet.getString("password").equals(password))
+	        else 
 	        {
-	        	JsonObject responseJsonObject = new JsonObject();
-	            responseJsonObject.addProperty("status", "fail");
-	        	responseJsonObject.addProperty("message", "incorrect password");
 	        	
-	        	 response.getWriter().write(responseJsonObject.toString());
-	        }
-	        else
-	        {
-	        	// set this user into the session
-	            request.getSession().setAttribute("user", new User(username));
-	            request.getSession().setAttribute("cart", new HashMap<String,Integer>());
+	        	boolean success = false;
+	        	// get the encrypted password from the database
+				String encryptedPassword = resultSet.getString("password");
+				
+				// use the same encryptor to compare the user input password with encrypted password stored in DB
+				success = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+				
+				System.out.println(password + " " + encryptedPassword + " " + success);
+				
+				if(success) 
+				{
+					// set this user into the session
+		            request.getSession().setAttribute("user", new User(username));
+		            request.getSession().setAttribute("cart", new HashMap<String,Integer>());
 
-	            JsonObject responseJsonObject = new JsonObject();
-	            responseJsonObject.addProperty("status", "success");
-	            responseJsonObject.addProperty("message", "success");
+		            JsonObject responseJsonObject = new JsonObject();
+		            responseJsonObject.addProperty("status", "success");
+		            responseJsonObject.addProperty("message", "success");
 
-	            response.getWriter().write(responseJsonObject.toString());
+		            response.getWriter().write(responseJsonObject.toString());
+				}
+				else 
+				{
+					JsonObject responseJsonObject = new JsonObject();
+		            responseJsonObject.addProperty("status", "fail");
+		        	responseJsonObject.addProperty("message", "incorrect password");
+		        	
+		        	response.getWriter().write(responseJsonObject.toString());
+				}
 	        }
         } 
         
