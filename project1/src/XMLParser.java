@@ -246,7 +246,7 @@ public class XMLParser {
 											System.out.println("No such star in database.");
 											continue;
 										}
-										else if(movieExists(f.getTextContent()))
+										else if(!movieExists(f.getTextContent()))
 										{
 											System.out.println("No such movie in database.");
 											continue;
@@ -667,7 +667,7 @@ public class XMLParser {
 			//parseActorsXML(actorsXML);
 			
 			File starsXML = new File("src/casts124.xml");
-			parseStarsXML(starsXML);
+			//parseStarsXML(starsXML);
 			connection.close();
 		 }
 		catch (Exception e) 
