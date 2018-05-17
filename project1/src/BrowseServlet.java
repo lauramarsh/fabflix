@@ -108,8 +108,8 @@ public class BrowseServlet extends HttpServlet {
         				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
         				+ "and movies.id = ratings.movieId "
-        				+ "group by movies.id, title, rating, year, director "
         				+ "and genres.name like '%" + genre + "%' "
+        				+ "group by movies.id, title, rating, year, director "
         				+ sortBy
         				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		} else { // For browse title selections
@@ -118,8 +118,8 @@ public class BrowseServlet extends HttpServlet {
         				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
         				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
         				+ "and movies.id = ratings.movieId "
-        				+ "group by movies.id, title, rating, year, director "
         				+ "and title like '" + title + "%' "
+        				+ "group by movies.id, title, rating, year, director "
         				+ sortBy
         				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
     		}
