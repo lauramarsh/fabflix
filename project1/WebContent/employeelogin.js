@@ -1,8 +1,8 @@
 /**
- * Handle the data returned by LoginServlet
+ * Handle the data returned by EmployeeLoginServlet
  * @param resultDataString jsonObject
  */
-function handleLoginResult(resultDataString) {
+function handleEmployeeLoginResult(resultDataString) {
 	console.log(resultDataString);
     resultDataJson = JSON.parse(resultDataString);
 
@@ -12,7 +12,7 @@ function handleLoginResult(resultDataString) {
 
     // If login success, redirect to index.html page
     if (resultDataJson["status"] === "success") {
-        window.location.replace("index.html");
+        window.location.replace("employeeIndex.html");
     }
     // If login fail, display error message on <div> with id "login_error_message"
     else {
@@ -27,7 +27,7 @@ function handleLoginResult(resultDataString) {
  * Submit the form content with POST method
  * @param formSubmitEvent
  */
-function submitLoginForm(formSubmitEvent) {
+function submitEmployeeLoginForm(formSubmitEvent) {
     console.log("submit login form");
 
     // Important: disable the default action of submitting the form
@@ -36,12 +36,12 @@ function submitLoginForm(formSubmitEvent) {
     formSubmitEvent.preventDefault();
 
     jQuery.post(
-        "api/login",
+        "api/employeelogin",
         // Serialize the login form to the data sent by POST request
-        jQuery("#login_form").serialize(),
-        (resultDataString) => handleLoginResult(resultDataString));
+        jQuery("#employee_login_form").serialize(),
+        (resultDataString) => handleEmployeeLoginResult(resultDataString));
 
 }
 
 // Bind the submit action of the form to a handler function
-jQuery("#login_form").submit((event) => submitLoginForm(event));
+jQuery("#employee_login_form").submit((event) => submitEmployeeLoginForm(event));

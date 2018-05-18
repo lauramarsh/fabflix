@@ -38,8 +38,9 @@ public class LoginFilter implements Filter {
         requestURI = requestURI.toLowerCase();
         
         //only allow access to login page and styling pages 
-        return requestURI.endsWith("login.html") || requestURI.endsWith("login.js")
-                || requestURI.endsWith("api/login")  || requestURI.endsWith("bootstrap.min..css")
+        return requestURI.endsWith("login.html") 
+        		|| requestURI.endsWith("api/employeelogin") || requestURI.endsWith("login.js")
+                || requestURI.endsWith("api/login")  || requestURI.endsWith("bootstrap.min.css")
                 || requestURI.endsWith("style.css") || requestURI.endsWith("background.jpg") ;
         
     }
