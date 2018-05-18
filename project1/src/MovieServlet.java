@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,7 +57,8 @@ public class MovieServlet extends HttpServlet {
     		Statement statement = connection.createStatement();
     		
     		// Query 
-    		String query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating "
+    		StringBuilder query = new StringBuilder();
+    		query.append("select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating "
     				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
     				+ "where movies.id = genres_in_movies.movieId "
     				+ "and genres_in_movies.genreId = genres.id "
@@ -63,10 +66,13 @@ public class MovieServlet extends HttpServlet {
     				+ "and stars_in_movies.starId = stars.id "
     				+ "and movies.id = ratings.movieId "
     				+ "group by movies.id, title, rating, year, director "
-    				+ "having title like '" + movieTitle + "';";
+    				+ "having title like ?;");
 
     		// ResultSet should be 1 movie, resultSet.next() is null
-    		ResultSet resultSet = statement.executeQuery(query);
+    		PreparedStatement ps = connection.prepareStatement(query.toString());
+    		ps.setString(1, movieTitle);
+    		ResultSet resultSet = ps.executeQuery();
+    		
     		
     		while (resultSet.next()) {
     			String movieID = resultSet.getString("movies.id");

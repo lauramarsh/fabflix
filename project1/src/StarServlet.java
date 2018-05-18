@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,15 +55,18 @@ public class StarServlet extends HttpServlet {
     		Statement statement = connection.createStatement();
     		
     		// Query 
-    		String query = "select stars.id, name, birthYear, group_concat(distinct movies.title) as movie_list "
+    		StringBuilder query = new StringBuilder();
+    		query.append("select stars.id, name, birthYear, group_concat(distinct movies.title) as movie_list "
     				+ "from stars, stars_in_movies, movies "
     				+ "where stars.id = stars_in_movies.starId "
     				+ "and stars_in_movies.movieId = movies.id "
-    				+ "and stars.id = '" + starID + "' "
-    				+ "group by stars.id, name, birthYear; ";
+    				+ "and stars.id = ? "
+    				+ "group by stars.id, name, birthYear; ");
 
     		// ResultSet should be 1 movie, resultSet.next() is null
-    		ResultSet resultSet = statement.executeQuery(query);
+    		PreparedStatement ps = connection.prepareStatement(query.toString());
+    		ps.setString(1, starID);
+    		ResultSet resultSet = ps.executeQuery();
     		
     		while (resultSet.next()) {
     			String starName = resultSet.getString("name");

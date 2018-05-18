@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -87,7 +88,8 @@ public class CartServlet extends HttpServlet {
 		    			// Query 
 		        		String query = "select title from movies where id='" + movieID + "';";
 		        		// ResultSet should be 1 movie, resultSet.next() is null
-		        		ResultSet resultSet = statement.executeQuery(query);
+		        		PreparedStatement ps = connection.prepareStatement(query);
+		        		ResultSet resultSet = ps.executeQuery();
 		        		
 		        		String cartMovieTitle = "";
 		        		while(resultSet.next()) {

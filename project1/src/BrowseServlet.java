@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -86,7 +87,7 @@ public class BrowseServlet extends HttpServlet {
     		Class.forName("com.mysql.jdbc.Driver").newInstance();
     		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
     		Statement statement = connection.createStatement();
-    		String query = "";
+    		StringBuilder query = new StringBuilder();
     		
     		String sortBy = "";
     		// Apply sorting: either by rating OR by title name 
@@ -101,31 +102,37 @@ public class BrowseServlet extends HttpServlet {
     			sortBy = " order by rating " + rating_order + " ";
     		}
     		
-    		if (genre != "") { //For browse genre selections
+    		// Build Query String
+    		query.append("select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating "
+        				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
+        				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
+        				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
+        				+ "and movies.id = ratings.movieId ");
+    		
+    		
+    		if (genre != "") { //For browse genre selections '%" + genre + "%'
     			// QUERIES
-        		query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating "
-        				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
-        				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
-        				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
-        				+ "and movies.id = ratings.movieId "
-        				+ "and genres.name like '%" + genre + "%' "
+        		query.append("and genres.name like ? "
         				+ "group by movies.id, title, rating, year, director "
         				+ sortBy
-        				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
-    		} else { // For browse title selections
-    			query = "select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating "
-        				+ "from movies, genres_in_movies, genres, stars, stars_in_movies, ratings "
-        				+ "where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id "
-        				+ "and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id "
-        				+ "and movies.id = ratings.movieId "
-        				+ "and title like '" + title + "%' "
+        				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";");
+    		} else { // For browse title selections '" + title + "%'
+    			query.append("and title like ? "
         				+ "group by movies.id, title, rating, year, director "
         				+ sortBy
-        				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";";
+        				+ "limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";");
     		}
     		
-    		// execute query
-    		ResultSet resultSet = statement.executeQuery(query);
+    		// create prepared statement and execute query
+    		PreparedStatement ps = connection.prepareStatement(query.toString());
+    		
+    		int setCounter = 1;
+    		if (genre != "") {
+    			ps.setString(setCounter++, "%" + genre + "%");
+    		} else {
+    			ps.setString(setCounter++, title + "%");
+    		}
+    		ResultSet resultSet = ps.executeQuery();
     		
     		out.println("<body>");
     		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"cart\">cart</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
