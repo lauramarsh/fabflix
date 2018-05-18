@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<!-- BootStrap CSS -->
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+	<title>Add New Movie</title>
+</head>
+<body>
+	<div class="nav-bar table__black">
+		<a  class ="btn btn-warning"  href = "employeeIndex.html">home</a>
+		<a  class ="btn btn-warning"  href = "employeelogin.html">log Out</a>
+	</div>
+	<div class="title">
+		<h1>Add a Movie</h1>
+	</div>
+	<div class="browse">
+		<div class="browse--items">
+			<form id=addNewMovie ACTION="addNewMovie" METHOD="GET">
+				<div class=searchItem>
+    			<div class=searchLabel><h3>Title</h3></div>
+    			<input id="title" type="text" name = "title" placeholder="Movie Title...">
+    			</div>
+    		
+    			<div class=searchItem>
+    			<div class=searchLabel><h3>Year</h3></div>
+    			<input id="year" type="text" name = "year" placeholder="Release Year...">
+    			</div>
+    			
+    			<div class=searchItem>
+    			<div class=searchLabel><h3>Director</h3></div>
+    			<input id="director" type="text" name = "director" placeholder="Director Name...">
+    			</div>
+    			
+    			<div class=searchItem>
+    			<div class=searchLabel><h3>Star</h3></div>
+    			<input id="star" type="text" name = "star" placeholder="Star Name (1)...">
+    			</div>
+    			
+    			<div class=searchItem>
+    			<div class=searchLabel><h3>Genre</h3></div>
+    			<input id="genre" type="text" name = "genre" placeholder="Genre (1)...">
+    			</div>
+    			
+    			<input type="hidden" id="starBY" name="starBY" value="null"/>
+    			<input type="submit" value="Add Movie" class="btn btn-danger"/>    		    
+			</form>
+		</div>
+	</div>
+	
+	<div id="addMovie_error_message"></div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		function handleMovieResult(resultDataString) {
+			console.log(resultDataString);
+		    resultDataJson = JSON.parse(resultDataString);
+	
+		    console.log("handle add Movie");
+		    console.log(resultDataJson);
+		    console.log(resultDataJson["status"]);
+	
+		    // If Movie add success, show a message
+		    if (resultDataJson["status"] === "success") {
+		    	jQuery("#addMovie_error_message").text("Movie successfully added!");
+		    }
+		    // If Movie add fail, show an error
+		    else {
+		        console.log("show error message");
+		        console.log(resultDataJson["message"]);
+		        jQuery("#addMovie_error_message").text(resultDataJson["message"]);
+		    }
+		}
+		
+		function submitMovieForm(formSubmitEvent) {
+		    console.log("add Movie");
+
+		    // Important: disable the default action of submitting the form
+		    //   which will cause the page to refresh
+		    //   see jQuery reference for details: https://api.jquery.com/submit/
+		    formSubmitEvent.preventDefault();
+
+		    jQuery.post(
+		        "addNewMovie",
+		        // Serialize the login form to the data sent by POST request
+		        jQuery("#addNewMovie").serialize(),
+		        (resultDataString) => handleMovieResult(resultDataString));
+
+		}
+		
+		jQuery("#addNewMovie").submit((event) => submitMovieForm(event));
+	</script>
+</body>
+</html>

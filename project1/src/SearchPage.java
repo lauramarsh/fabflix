@@ -124,7 +124,7 @@ public class SearchPage extends HttpServlet{
     		
     		query.append(" limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";");
     		
-    		System.out.println(query.toString()); 
+    		
     		// create prepared statement
     		PreparedStatement preparedStatement =
     		        connection.prepareStatement(query.toString());
@@ -143,10 +143,14 @@ public class SearchPage extends HttpServlet{
     			preparedStatement.setString(setCounter++, "%" + star_name + "%");
     		}
     		
+    		System.out.println(query.toString());
     		// execute query
     		ResultSet resultSet = preparedStatement.executeQuery();
     		
     		out.println("<body>");
+    		
+//    		out.println("<h1>" + preparedStatement.toString() + "</h1>"); // check what the prepared statement is
+    		
     		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"cart\">cart</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
     		out.println("<div class=\"title\">");
     		out.println("<h1>" + queryDesc + " </h1>");
