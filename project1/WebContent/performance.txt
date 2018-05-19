@@ -1,0 +1,13 @@
+2 optimization techniques
+
+1) We changed all of our database querying to use Prepared Statements.
+	- Search
+		Speed after PS: 8128 ms
+	- Browse
+		Speed after PS: 4274 ms
+	- Checkout
+		Speed after PS: 3038 ms
+		
+2) XML performance on AWS
+	-2 Parsers
+	
