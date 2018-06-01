@@ -23,6 +23,7 @@ public class SearchBox extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String queryError;
 
 	/**
      * @see HttpServlet#HttpServlet()
@@ -105,7 +106,7 @@ public class SearchBox extends HttpServlet{
     		//perform full text search
     		if(searchList.length > 0)
     		{
-    			query.append("  where match (title) against ('");
+    			query.append("  and match (title) against ('");
     			for(int i = 0; i < searchList.length; i++)
     			{
     				query.append(searchList[i] + " ");
@@ -125,6 +126,7 @@ public class SearchBox extends HttpServlet{
     		
     		query.append(" limit " + Integer.toString(resultLimit) + " offset " + Integer.toString(offsetCount) + ";");
     		
+    		queryError = query.toString();
     		
     		// create prepared statement
     		PreparedStatement preparedStatement =
@@ -254,7 +256,7 @@ public class SearchBox extends HttpServlet{
         	e.printStackTrace();
     		out.println("<body>");
     		out.println("<p>");
-    		out.println("Exception in doGet: " + e.getMessage());
+    		out.println("Exception in doGet: " + queryError);
     		out.println("</p>");
     		out.print("</body>");
         }
