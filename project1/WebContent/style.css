@@ -47,6 +47,17 @@ body {
 	margin: 0 auto;
 }
 
+.searchBox input
+{
+	float: left;
+}
+
+.searchBox .btn-danger
+{
+	color: #FFFFFF !important;
+	margin-left: 5px;
+}
+
 .cart {
 	margin-top: 150px;
 }
