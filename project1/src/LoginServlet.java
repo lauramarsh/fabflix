@@ -61,10 +61,8 @@ public class LoginServlet extends HttpServlet {
 	        String password = request.getParameter("password");
 	       
 	        StringBuilder query = new StringBuilder();
-	        
 	        query.append("select * from customers where email = '"+username+"'");
 	 
-	        
 			// execute query
 			ResultSet resultSet = statement.executeQuery(query.toString());
 			
