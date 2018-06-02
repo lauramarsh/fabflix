@@ -170,3 +170,44 @@ input {
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
+
+.autocomplete-suggestions 
+{ 
+	border: 1px solid #999; 
+	background: #FFF; 
+	overflow: auto; 
+}
+
+.searchBox #autocomplete
+{
+	width: 200px;
+}
+
+.autocomplete-suggestion 
+{ 
+	
+	overflow: hidden; 
+	padding: 2px 5px; 
+	text-align: left;
+	white-space: nowrap; 
+	
+}
+
+.autocomplete-selected 
+{ 
+	background:  #F0F0F0;
+}
+.autocomplete-suggestions strong 
+{ 
+	font-weight: normal; 
+	color: red; 
+}
+.autocomplete-group 
+{ 
+	padding: 2px 5px; 
+}
+.autocomplete-group strong 
+{ 
+	display: block; 
+	border-bottom: 1px solid #000; 
+}
