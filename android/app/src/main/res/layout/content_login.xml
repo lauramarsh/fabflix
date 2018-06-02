@@ -14,36 +14,40 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Username"
         android:hint="Username"
         tools:absoluteX="84dp"
         tools:absoluteY="223dp"
         tools:text="Username" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Password"
         android:hint="Password"
         tools:absoluteX="84dp"
         tools:absoluteY="299dp"
         tools:text="Password" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Login"
         tools:absoluteX="148dp"
         tools:absoluteY="374dp"
         tools:text="Login" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:id="@+id/http_response"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
