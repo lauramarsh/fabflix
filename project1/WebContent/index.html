@@ -9,19 +9,36 @@
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 	<!-- BootStrap CSS -->
 	<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+	 <!-- Using jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- include jquery autocomplete JS  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
+    
 	<title>fabflix</title>
 </head>
 <body>
 	<div class="nav-bar table__black">
-		<a  class ="btn btn-warning"  href = "cart">cart</a>
-		<a  class ="btn btn-warning"  href = "login.html">log Out</a>
+		<form class =searchBox ACTION= "searchbox" METHOD = "GET">
+			<input type="text" name = "query" id="autocomplete" placeholder="Search...">
+			<input id="searchItem" name="title-order" type="hidden">
+   		    <input id="searchItem" name="rating-order" type="hidden" value="DESC">
+   		    <input id="searchItem" name="page" type="hidden" value="0">
+   		    <input id="searchItem" name="results" type="hidden" value="20">
+			<input type="submit" value="Search" class="btn btn-danger"/> 
+			
+			<a  class ="btn btn-warning"  href = "cart">cart</a>
+		    <a  class ="btn btn-warning"  href = "login.html">log Out</a>
+		</form>
+		
+		<script src="index.js"></script>
 	</div>
 	<div class="title">
 		<h1>Welcome to FabFlix</h1>
 	</div>
 	<div class="title--actions">
 		<a href="browse.html" class="btn btn-danger">Browse</a>
-		<a href="search.html" class="btn btn-danger">Search</a>
+		<a href="search.html" class="btn btn-danger">Advanced Search</a>
 	</div>
 </body>
 </html>
