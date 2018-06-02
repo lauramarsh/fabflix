@@ -661,13 +661,13 @@ public class XMLParser {
     		maxStarID = 1000;
     		
 			File movieXML = new File("src/mains243.xml");
-			//parseMovieXML(movieXML);
+			parseMovieXML(movieXML);
 		    
 			File actorsXML = new File("src/actors63.xml");
-			//parseActorsXML(actorsXML);
+			parseActorsXML(actorsXML);
 			
 			File starsXML = new File("src/casts124.xml");
-			//parseStarsXML(starsXML);
+			parseStarsXML(starsXML);
 			connection.close();
 		 }
 		catch (Exception e) 
