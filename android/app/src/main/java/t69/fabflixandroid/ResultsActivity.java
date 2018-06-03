@@ -39,7 +39,7 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
 
         Bundle bundle = getIntent().getExtras();
-        tParam = bundle.getString("movieTitle");
+        tParam = bundle.getString("title");
         if (tParam != null && !"".equals(tParam)) {
             titleResults(tParam, "1");
         }
@@ -114,7 +114,7 @@ public class ResultsActivity extends AppCompatActivity {
 
     public void titleResults(final String title, final String page) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String loginURL = "https://52.15.158.77:8443/project1/api/login";
+        String loginURL = "https://52.15.158.77:8443/project1/mobileSearch";
         try {
             loginURL += "?title=" + URLEncoder.encode(title, "UTF-8") + "&page=" + page;
         } catch (Exception e) {
@@ -122,7 +122,7 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         // send request
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, loginURL, (JSONObject) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, loginURL, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -140,7 +140,6 @@ public class ResultsActivity extends AppCompatActivity {
                 Log.v("ERROR WITH JSON RET", error.toString());
             }
         });
-
         queue.add(request);
         return;
     }

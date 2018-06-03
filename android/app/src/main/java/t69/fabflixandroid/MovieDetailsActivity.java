@@ -28,5 +28,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 + "\n\nDirector: " + hm.get("director")
                 + "\n\nGenres: " + hm.get("genres")
                 + "\n\nStars: " + hm.get("stars");
+    }
 }
 
