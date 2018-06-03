@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
     	// TODO Auto-generated method stub
         PrintWriter out = response.getWriter();
 
+        /*
        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
         System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
 
@@ -45,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             
             out.close();
             return;}
-        
+        */
 		
     			String loginUser = "root";
     	        String loginPasswd = "pissoff";
