@@ -23,22 +23,22 @@
 
             <Button
                 android:id="@+id/prev"
-                android:text="Prev"
-                android:background="#0000ff"
-                android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Prev"
+                android:background="#FF0000"
+                android:textColor="#FFFFFF"
                 android:layout_gravity="center"
                 android:visibility="invisible"
                 />
 
             <Button
                 android:id="@+id/next"
-                android:text="Next"
-                android:background="#0000ff"
-                android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Next"
+                android:background="#FF0000"
+                android:textColor="#FFFFFF"
                 android:layout_gravity="bottom"
                 android:visibility="invisible"/>
         </LinearLayout>
