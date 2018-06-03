@@ -36,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void performSearch(View view, String movie) {
         Intent searchResults = new Intent(this, ResultsActivity.class);
-        searchResults.putExtra("movie", movie);
+        searchResults.putExtra("title", movie);
         startActivity(searchResults);
     }
 }
