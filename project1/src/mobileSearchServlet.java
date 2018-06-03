@@ -41,7 +41,8 @@ public class mobileSearchServlet extends HttpServlet {
 		String loginUser = "root";
         String loginPasswd = "pissoff";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
-        
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
 		try {
         	
     		Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -96,7 +97,8 @@ public class mobileSearchServlet extends HttpServlet {
 	        	responseJsonObject.addProperty("pageNum", pageNum);
 	        }
 	        
-	        response.getWriter().write(responseJsonObject.toString());
+	        
+	        out.write(responseJsonObject.toString());
 	        connection.close();
 	        statement.close();
 	        

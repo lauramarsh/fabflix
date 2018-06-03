@@ -122,7 +122,7 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         // send request
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, loginURL, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, loginURL, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
