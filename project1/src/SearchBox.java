@@ -5,9 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -97,11 +94,13 @@ public class SearchBox extends HttpServlet{
     		
     		queryDesc.append("Search Results");
     		
-    		query.append(" select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, \':\', stars.id)) as stars_list, rating");
+    		query.append(" select movies.id, title, director, year, group_concat(distinct genres.name) as genre_list, group_concat(distinct concat(stars.name, ':', stars.id)) as stars_list, rating");
     		query.append(" from movies, genres_in_movies, genres, stars, stars_in_movies, ratings");
     		query.append(" where movies.id = genres_in_movies.movieId and genres_in_movies.genreId = genres.id");
     		query.append(" and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id");
     		query.append(" and movies.id = ratings.movieId");
+    		
+    
     		
     		//perform full text search
     		if(searchList.length > 0)
