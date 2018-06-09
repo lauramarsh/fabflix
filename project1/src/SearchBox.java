@@ -100,17 +100,15 @@ public class SearchBox extends HttpServlet{
     		query.append(" and movies.id = stars_in_movies.movieId and stars_in_movies.starId = stars.id");
     		query.append(" and movies.id = ratings.movieId");
     		
-    
-    		
     		//perform full text search
     		if(searchList.length > 0)
     		{
-    			query.append("  and match (title) against ('");
+    			query.append("  and match (title) against (");
     			for(int i = 0; i < searchList.length; i++)
     			{
-    				query.append(searchList[i] + " ");
+    				query.append("? ");
     			}
-    			query.append("' in boolean mode)");
+    			query.append(" in boolean mode)");
     		}
     			
     		query.append(" group by movies.id, title, rating, year, director");
@@ -132,6 +130,12 @@ public class SearchBox extends HttpServlet{
     		        connection.prepareStatement(query.toString());
 
     		System.out.println(query.toString());
+    		
+			for(int i = 0; i < searchList.length; i++)
+			{
+				preparedStatement.setString(i+1, searchList[i] + "* ");
+			}	
+    
     		// execute query
     		ResultSet resultSet = preparedStatement.executeQuery();
     		

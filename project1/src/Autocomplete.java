@@ -88,12 +88,12 @@ public class Autocomplete extends HttpServlet {
 	    		query.append(" select id, title from movies ");
 	    		
 	    		//perform full text search
-    			query.append("  where match (title) against ('");
+    			query.append("  where match (title) against (");
     			for(int i = 0; i < searchList.length; i++)
-    			{
-    				query.append(searchList[i] + " ");
-    			}
-    			query.append("' in boolean mode)");
+				{
+					query.append("? ");
+				}	
+    			query.append(" in boolean mode)");
 	    		
     			// set limit specified in rubric
 	    		query.append(" limit 10");
@@ -101,7 +101,13 @@ public class Autocomplete extends HttpServlet {
 	    		// create prepared statement
 	    		PreparedStatement preparedStatement =
 	    		        connection.prepareStatement(query.toString());
-
+	    		
+	    		// set parameters
+	    		for(int i = 0; i < searchList.length; i++)
+				{
+					preparedStatement.setString(i+1, searchList[i] + "* ");
+				}	
+	    
 	    		System.out.println(query.toString());
 	    		// execute query
 	    		ResultSet resultSet = preparedStatement.executeQuery();
