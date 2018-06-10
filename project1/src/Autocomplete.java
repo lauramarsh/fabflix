@@ -47,10 +47,6 @@ public class Autocomplete extends HttpServlet {
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String loginUser = "root";
-        String loginPasswd = "pissoff";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
-        
 		try {
 			
 			// Connect to database using pooling

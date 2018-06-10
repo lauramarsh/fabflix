@@ -74,9 +74,7 @@ public class CartServlet extends HttpServlet {
 	            Connection connection = ds.getConnection();
 	            if (connection == null)
 	                out.println("dbcon is null.");
-	    		
-	    		Statement statement = connection.createStatement();
-	    		
+	    	
 	    		out.println("<div class=\"block block__thin\">");
 	    		out.println("<div class=\"title\"><h2>Cart</h2></div>");
 	    		
@@ -132,7 +130,6 @@ public class CartServlet extends HttpServlet {
 	    		out.println("<script src=\"./addMovie.js\"></script>");
 	    		out.println("</body>");
 	    		
-	    		statement.close();
 	    		connection.close();
 	    	
 	        } catch (Exception e) {

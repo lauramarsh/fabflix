@@ -105,7 +105,6 @@ public class BrowseServlet extends HttpServlet {
             if (connection == null)
                 out.println("dbcon is null.");
     		
-    		Statement statement = connection.createStatement();
     		StringBuilder query = new StringBuilder();
     		
     		String sortBy = "";
@@ -262,7 +261,7 @@ public class BrowseServlet extends HttpServlet {
     		out.println("</body>");
     		
     		resultSet.close();
-    		statement.close();
+    		ps.close();
     		connection.close();
     		
     		

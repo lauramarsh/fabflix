@@ -66,9 +66,7 @@ public class SearchBox extends HttpServlet{
             Connection connection = ds.getConnection();
             if (connection == null)
                 out.println("dbcon is null.");
-    		
-    		Statement statement = connection.createStatement();
-    		
+    		    		
     		// Query params as string list
     		String searchContent = request.getParameter("query");
     		String[] searchList = searchContent.split(" ");
@@ -264,7 +262,7 @@ public class SearchBox extends HttpServlet{
     		out.println("</body>");
     		
     		resultSet.close();
-    		statement.close();
+    		preparedStatement.close();
     		connection.close();
     			
     		

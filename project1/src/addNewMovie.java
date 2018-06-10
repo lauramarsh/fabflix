@@ -40,11 +40,7 @@ public class addNewMovie extends HttpServlet {
     
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String loginUser = "root";
-        String loginPasswd = "pissoff";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
-        
-        
+		
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
@@ -66,9 +62,7 @@ public class addNewMovie extends HttpServlet {
             Connection connection = ds.getConnection();
             if (connection == null)
                 out.println("dbcon is null.");
-    		
-    		Statement statement = connection.createStatement();
-    		
+    		    		
     		// Insert Query Params
     		String title = request.getParameter("title");
     		String year = request.getParameter("year");

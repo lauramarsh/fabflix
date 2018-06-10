@@ -122,6 +122,7 @@ public class CheckoutServlet extends HttpServlet{
     					
     					// execute query
     		    		ResultSet rs = statement.executeQuery(idQuery);
+    		    		statement.close();
     					
     		    		rs.next();
     		    		customerId = rs.getString("id");
@@ -131,7 +132,7 @@ public class CheckoutServlet extends HttpServlet{
     		    		    		    		
     		    		// execute query
     		    		statement.executeUpdate(insertQuery);
-    		    	
+    		    		statement.close();
     		    		
     				}
     				
@@ -177,7 +178,7 @@ public class CheckoutServlet extends HttpServlet{
     		out.println("</body>");
     		
     		resultSet.close();
-    		statement.close();
+    		preparedStatement.close();
     		connection.close();
     			
     		
