@@ -3,10 +3,13 @@
 import com.google.gson.JsonObject;
 import java.util.*;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
@@ -30,15 +33,26 @@ public class employeeLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// TODO Auto-generated method stub
     	PrintWriter out = response.getWriter();
-    	
-    	String loginUser = "root";
-        String loginPasswd = "pissoff";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
         
 		try {
 		        	
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+			// Connect to database using pooling
+            Context initCtx = new InitialContext();
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/MovieDb");
+            
+            if (ds == null)
+                out.println("ds is null.");
+
+            Connection connection = ds.getConnection();
+            if (connection == null)
+                out.println("dbcon is null.");
+    		
 			Statement statement = connection.createStatement();
 	    	        
 	        String username = request.getParameter("username");

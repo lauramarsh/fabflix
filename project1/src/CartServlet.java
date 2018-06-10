@@ -8,12 +8,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 /**
  * Servlet implementation class CartServlet
@@ -37,9 +40,7 @@ public class CartServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		synchronized(session) {
 
-			String loginUser = "root";
-	        String loginPasswd = "pissoff";
-	        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+			
 	        response.setContentType("text/html");
 	        PrintWriter out = response.getWriter();
 	
@@ -56,8 +57,24 @@ public class CartServlet extends HttpServlet {
     		out.println("<div class=\"nav-bar table__black\"><a  class =\"btn btn-warning\"  href = \"index.html\">home</a><a  class =\"btn btn-warning\"  href = \"login.html\">log Out</a></div>");
 	        
 	        try {
-	    		Class.forName("com.mysql.jdbc.Driver").newInstance();
-	    		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+	    		
+	        	// Connect to database using pooling
+	            Context initCtx = new InitialContext();
+
+	            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+	            if (envCtx == null)
+	                out.println("envCtx is NULL");
+
+	            // Look up our data source
+	            DataSource ds = (DataSource) envCtx.lookup("jdbc/MovieDb");
+	            
+	            if (ds == null)
+	                out.println("ds is null.");
+
+	            Connection connection = ds.getConnection();
+	            if (connection == null)
+	                out.println("dbcon is null.");
+	    		
 	    		Statement statement = connection.createStatement();
 	    		
 	    		out.println("<div class=\"block block__thin\">");

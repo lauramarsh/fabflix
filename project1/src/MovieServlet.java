@@ -8,13 +8,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 
-
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 /**
  * Servlet implementation class MovieServlet
@@ -36,11 +38,7 @@ public class MovieServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		String loginUser = "root";
-        String loginPasswd = "pissoff";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
-        
+	
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
        
@@ -52,9 +50,22 @@ public class MovieServlet extends HttpServlet {
         out.println("<head><title>Fabflix Movie Page</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\"/></head>");
         
         try {
-    		Class.forName("com.mysql.jdbc.Driver").newInstance();
-    		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-    		Statement statement = connection.createStatement();
+        	// Connect to database using pooling
+            Context initCtx = new InitialContext();
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/MovieDb");
+            
+            if (ds == null)
+                out.println("ds is null.");
+
+            Connection connection = ds.getConnection();
+            if (connection == null)
+                out.println("dbcon is null.");
     		
     		// Query 
     		StringBuilder query = new StringBuilder();

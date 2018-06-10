@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -50,9 +53,22 @@ public class Autocomplete extends HttpServlet {
         
 		try {
 			
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-    		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-    		Statement statement = connection.createStatement();
+			// Connect to database using pooling
+            Context initCtx = new InitialContext();
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                response.getWriter().write("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/MovieDb");
+            
+            if (ds == null)
+                response.getWriter().write("ds is null.");
+
+            Connection connection = ds.getConnection();
+            if (connection == null)
+                response.getWriter().write("dbcon is null.");   		
 	        
 			// setup the response json arrray
 			JsonArray jsonArray = new JsonArray();

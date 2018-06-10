@@ -3,17 +3,21 @@ import com.google.gson.JsonObject;
 import java.util.*;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 /**
  * Servlet implementation class addNewMovie
@@ -42,11 +46,27 @@ public class addNewMovie extends HttpServlet {
         
         
         response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         
         try {
         	
-    		Class.forName("com.mysql.jdbc.Driver").newInstance();
-    		Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+        	// Connect to database using pooling
+            Context initCtx = new InitialContext();
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/MovieDb");
+            
+            if (ds == null)
+                out.println("ds is null.");
+
+            Connection connection = ds.getConnection();
+            if (connection == null)
+                out.println("dbcon is null.");
+    		
     		Statement statement = connection.createStatement();
     		
     		// Insert Query Params
