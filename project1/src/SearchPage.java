@@ -129,6 +129,7 @@ public class SearchPage extends HttpServlet{
     		PreparedStatement preparedStatement =
     		        connection.prepareStatement(query.toString());
 
+    		// set parameters
     		int setCounter = 1;
     		if(year.length() > 0) {
     			preparedStatement.setString(setCounter++, year);

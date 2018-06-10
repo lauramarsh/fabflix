@@ -71,14 +71,6 @@ public class Autocomplete extends HttpServlet {
 			else
 			{
 				
-//				//Check if item is in cache already
-//				for (String id : suggestions.keySet()) {
-//					String movieTitle = suggestions.get(id);
-//					if (movieTitle.toLowerCase().contains(searchContent.toLowerCase())) {
-//						jsonArray.add(generateJsonObject(id, movieTitle, ""));
-//					}
-//				}
-				
 				//Build query string 
 	    		StringBuilder query = new StringBuilder();
 	    		StringBuilder queryDesc = new StringBuilder();
