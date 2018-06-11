@@ -79,13 +79,13 @@ public class SearchPage extends HttpServlet{
             int page = Integer.parseInt(request.getParameter("page"));
             
             String results = request.getParameter("results");
-            int resultLimit = 20;
+            int resultLimit = 50;
             if (results != null && !results.equals("")) {
                resultLimit = Integer.parseInt(results); 
             }
             else
             {
-            	results = "20";
+            	results = "50";
             }
             int offsetCount = page * resultLimit;
            
