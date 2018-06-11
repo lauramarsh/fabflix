@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -121,7 +122,17 @@ public class Autocomplete extends HttpServlet {
 	    			// get movie data from result set
 	    			String movieId = resultSet.getString("movies.id");
 	    			String movieTitle = resultSet.getString("title");
-	    			jsonArray.add(generateJsonObject(movieId, movieTitle, ""));
+	    			
+	    			String encodedMovie = URLEncoder.encode(movieTitle, "UTF-8")
+	    				    .replaceAll("\\%28", "(") 
+	    				    .replaceAll("\\%29", ")") 
+	    				    .replaceAll("\\+", "%20") 
+	    				    .replaceAll("\\%27", "'") 
+	    				    .replaceAll("\\%21", "!") 
+	    				    .replaceAll("\\%7E", "~");
+	    			
+	    			jsonArray.add(generateJsonObject(movieId, movieTitle, 
+	    					request.getContextPath()+ "/moviepage?movie=" + encodedMovie));
 	    		}
 			}
 
@@ -143,12 +154,12 @@ public class Autocomplete extends HttpServlet {
 	 * }
 	 * 
 	 */
-	private static JsonObject generateJsonObject(String movieId, String movieTitle, String categoryName) {
+	private static JsonObject generateJsonObject(String movieId, String movieTitle, String url) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("value", movieTitle);
 		
 		JsonObject additionalDataJsonObject = new JsonObject();
-		additionalDataJsonObject.addProperty("category", categoryName);
+		additionalDataJsonObject.addProperty("url", url);
 		additionalDataJsonObject.addProperty("movieId", movieId);
 		
 		jsonObject.add("data", additionalDataJsonObject);

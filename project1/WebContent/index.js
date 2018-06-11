@@ -68,18 +68,16 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 function handleSelectSuggestion(suggestion) {
 	// TODO: jump to the specific result page based on the selected suggestion
 	
-	jQuery.ajax({
-	     type: 'GET',
+	 jQuery.ajax({
+		 type: 'GET',
 	     success:function() {
-	         window.location.href = "/project1/moviepage?movie=" + encodeURIComponent(suggestion["value"]);
+	    	 window.location.href = suggestion["data"]["url"];
 	     }
-	    
-	})
-	
-	console.log("you selected " + suggestion["value"])
-	var url = suggestion["value"]
-	console.log(url)
+	 })
 	 
+	console.log("you selected " + suggestion["value"])
+	console.log(suggestion["data"]["movieId"]);
+	console.log(suggestion["data"]["url"]);
 }
 
 /*
