@@ -54,7 +54,7 @@ public class addNewMovie extends HttpServlet {
                 out.println("envCtx is NULL");
 
             // Look up our data source
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/MovieDb");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/MasterDb");
             
             if (ds == null)
                 out.println("ds is null.");
