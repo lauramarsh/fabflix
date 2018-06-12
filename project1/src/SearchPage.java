@@ -39,7 +39,8 @@ public class SearchPage extends HttpServlet{
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	
+		// Start timing for TS
+		long startTS = System.nanoTime();
 
 		String contextPath = getServletContext().getRealPath("/");
 
@@ -59,8 +60,7 @@ public class SearchPage extends HttpServlet{
         // create new file in the system
         file.createNewFile();
 		
-		// Start timing for TS
-		long startTS = System.nanoTime();
+		
 		
         response.setContentType("text/html");
         
@@ -192,6 +192,7 @@ public class SearchPage extends HttpServlet{
            long TJ = endTJ - startTJ; 
            
            writer.write(TJ + ",");
+           System.out.print("TJ value: " + TJ);
     		
     		out.println("<body>");
     		
@@ -330,6 +331,7 @@ public class SearchPage extends HttpServlet{
         
         // Write value to file
         writer.write(TS + "\n");
+        System.out.print("TS value: " + TS);
         writer.close();
 	}
 
