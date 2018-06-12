@@ -52,19 +52,29 @@
 Yes.  Both are verified and accessible.
 
 ### Explain how connection pooling works with two backend SQL (in your code)?
-In our code, connection pooling works by sending requests on our site to one of 2 different identical master/slave instances.  Within the context.xml file, resources that connect to the mysql databases on these different instances are defined.
+In our code, connection pooling works by sending requests on our site to one of 2 different identical master/slave instances.  Within the context.xml file, resources that connect to the mysql databases on these different instances are defined.  Using sticky sessions, we are able to send data to one of these instances per session.
 
 ### How read/write requests were routed?
-Read requests are routed to either of the Master/Slave instances our site is running on.  Write requests are sent only to the Master database, which is defined in context.xml as "MasterDB"
+Read requests are routed to either of the Master/Slave instances our site is running on.  Write requests are sent only to the Master database, which is defined in context.xml as "MasterDb".  Using sticky sessions, all read requests requested per session will be sent to one of the Master/Slave instances and retrieved using their corresponding localhost's mysql database version of moviedb, defined in context.xml as "MovieDb".
 
 
 ## Task 3
 
 ### Have you uploaded the log files to Github? Where is it located?
+The log files are located within the main cs122b-spring18-team-69 repository.  They can be found here: 
+
 
 ### Have you uploaded the HTML file (with all sections including analysis, written up) to Github? Where is it located?
+The jmeter results html file is located within our project's WebContent and is titled "jmeter_report.html".  It can be found here: 
+cs122b-spring18-team-69/project1/WebContent/jmeter_report.html
 
 ### Have you uploaded the script  to Github? Where is it located?
+The script is located within the main cs122b-spring18-team-69 repository.  It can be found here:
+
 
 ### Have you uploaded the WAR file and README  to Github? Where is it located?
+The README file is located within the main cs122b-spring18-team-69 repository.  It can be found here:
+cs122b-spring18-team-69/README.md
+The war file is located within the main cs122b-spring18-team-69 repository.  It can be found here:
+
 
