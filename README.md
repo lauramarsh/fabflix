@@ -20,10 +20,10 @@
 * mobileSearchServelt.java -  Lines 49-64
 
 - Use of Connection Pooling for reading:
-![alt text](cs122b-spring18-team-69/metrics/UseOfConnectionPoolingForReading.png)
+![alt text](metrics/UseOfConnectionPoolingForReading.png)
 
 - Use of Connection Pooling for Writing:
-![alt text](cs122b-spring18-team-69/metrics/UseOfConnectionPooolingForWriting.png)
+![alt text](metrics/UseOfConnectionPooolingForWriting.png)
 
 ### How did you use Prepared Statements?
 
@@ -32,10 +32,10 @@
 * SearchPage.java          -  Lines 140-156
 
 - Use of Prepared Statments search box:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfPreparedStmtSearchBox.png)
+![alt text](metrics/UseOfPreparedStmtSearchBox.png)
 
 - Use of Prepared Statments search box:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfPreparedStmtSearchBox2.png)
+![alt text](metrics/UseOfPreparedStmtSearchBox2.png)
 
 
 ## Task 2
