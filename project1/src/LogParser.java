@@ -36,7 +36,7 @@ public class LogParser
 			while(sc.hasNextLine())
 			{
 				String line = sc.nextLine();
-				String [] values = line.split(" ");
+				String [] values = line.split(",");
 				int TJ = Integer.parseInt(values[0]), TS = Integer.parseInt(values[1]);
 				
 				count++;

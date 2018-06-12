@@ -38,27 +38,6 @@ public class SearchBox extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String contextPath = getServletContext().getRealPath("/");
-
-		String filePath=contextPath+"/log.txt";
-		
-		// create new files
-        File file = new File(filePath);
-        
-        // if file doesn't exist create it
-        if(!file.exists())
-        {
-        	file.createNewFile();	
-        }
-        
-        FileWriter writer = new FileWriter(file, true); 
-             
-        // create new file in the system
-        file.createNewFile();
-		
-		// Start timing for TS
-		long startTS = System.nanoTime();
-		
         response.setContentType("text/html");
         
         PrintWriter out = response.getWriter();   
@@ -143,9 +122,6 @@ public class SearchBox extends HttpServlet{
     		
     		queryError = query.toString();
     		
-    		// Start timing for TJ
-        	long startTJ = System.nanoTime();
-        	
         	// Connect to database using pooling
             Context initCtx = new InitialContext();
 
@@ -176,13 +152,6 @@ public class SearchBox extends HttpServlet{
     
     		// execute query
     		ResultSet resultSet = preparedStatement.executeQuery();
-    		
-    		// Finish timing for TJ
-    		 // Finish timing for TS 
-            long endTJ = System.nanoTime();
-            long TJ = endTJ - startTJ; 
-            
-            writer.write(TJ + " ");
     		
     		out.println("<body>");
     		
@@ -309,14 +278,7 @@ public class SearchBox extends HttpServlet{
         }
         out.println("</html>");
         out.close();
-        
-        // Finish timing for TS 
-        long endTS = System.nanoTime();
-        long TS = endTS - startTS; 
-        
-        // Write value to file
-        writer.write(TS + "\n");
-        writer.close();
+       
 	}
 
 	/**
