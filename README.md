@@ -4,14 +4,14 @@
 
 ### How did you use connection pooling?
 
-* Autocomplete.java        -  Lines 52-67
+* Autocomplete.java        -  Lines 53-68
 * BrowseServlet.java       -  Lines 91-106
 * CartServlet.java         -  Lines 61-76
 * CheckoutServlet.java     -  Lines 57-72
 * LoginServlet.java        -  Lines 57-72
 * MovieServlet.java        -  Lines 53-68
-* SearchBox.java           -  Lines 53-68
-* SearchPage.java          -  Lines 55-70
+* SearchBox.java           -  Lines 125-140
+* SearchPage.java          -  Lines 82-97
 * StarServlet.java         -  Lines 52-67
 * addNewMovie.java         -  Lines 49-64
 * addNewStar.java          -  Lines 49-64
