@@ -69,7 +69,8 @@ The jmeter results html file is located within our project's WebContent and is t
 cs122b-spring18-team-69/project1/WebContent/jmeter_report.html
 
 ### Have you uploaded the script  to Github? Where is it located?
-The script is located within the main cs122b-spring18-team-69 repository.  It can be found here:
+The script is located within the project1 src repository.  It can be found here:
+cs122b-spring18-team-69/project1/src/LogParser.java
 
 
 ### Have you uploaded the WAR file and README  to Github? Where is it located?
