@@ -4,14 +4,14 @@
 
 ### How did you use connection pooling?
 
-* Autocomplete.java        -  Lines 52-67
+* Autocomplete.java        -  Lines 53-68
 * BrowseServlet.java       -  Lines 91-106
 * CartServlet.java         -  Lines 61-76
 * CheckoutServlet.java     -  Lines 57-72
 * LoginServlet.java        -  Lines 57-72
 * MovieServlet.java        -  Lines 53-68
-* SearchBox.java           -  Lines 53-68
-* SearchPage.java          -  Lines 55-70
+* SearchBox.java           -  Lines 125-140
+* SearchPage.java          -  Lines 82-97
 * StarServlet.java         -  Lines 52-67
 * addNewMovie.java         -  Lines 49-64
 * addNewStar.java          -  Lines 49-64
@@ -20,10 +20,12 @@
 * mobileSearchServelt.java -  Lines 49-64
 
 - Use of Connection Pooling for reading:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfConnectionPoolingForReading.png)
+
+![alt text](metrics/UseOfConnectionPoolingForReading.png)
 
 - Use of Connection Pooling for Writing:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfConnectionPooolingForWriting.png)
+
+![alt text](metrics/UseOfConnectionPooolingForWriting.png)
 
 ### How did you use Prepared Statements?
 
@@ -32,10 +34,12 @@
 * SearchPage.java          -  Lines 140-156
 
 - Use of Prepared Statments search box:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfPreparedStmtSearchBox.png)
+
+![alt text](metrics/UseOfPreparedStmtSearchBox.png)
 
 - Use of Prepared Statments search box:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfPreparedStmtSearchBox2.png)
+
+![alt text](metrics/UseOfPreparedStmtSearchBox2.png)
 
 
 ## Task 2
