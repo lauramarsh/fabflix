@@ -20,10 +20,10 @@
 * mobileSearchServelt.java -  Lines 49-64
 
 - Use of Connection Pooling for reading:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfConnectionPoolingForReading.png)
+![alt text](cs122b-spring18-team-69/metrics/UseOfConnectionPoolingForReading.png)
 
 - Use of Connection Pooling for Writing:
-![alt text](https://raw.githubusercontent.com/UCI-Chenli-teaching/cs122b-spring18-team-69/metrics/UseOfConnectionPooolingForWriting.png)
+![alt text](cs122b-spring18-team-69/metrics/UseOfConnectionPooolingForWriting.png)
 
 ### How did you use Prepared Statements?
 
