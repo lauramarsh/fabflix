@@ -25,7 +25,7 @@ public class LogParser
 	public static void main(String [] args)
 	{
 		
-		String filePath = "/Users/KimberlyQuintana/Desktop/CS122B/cs122b-spring18-team-69/HTTP_SingleInstance_No_Ps.txt";
+		String filePath = "PUT LOG FILE PATH HERE";
 		
 		File file = new File(filePath);
 		
