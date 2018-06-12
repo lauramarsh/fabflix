@@ -25,7 +25,7 @@ public class LogParser
 	public static void main(String [] args)
 	{
 		
-		String filePath = "/Users/KimberlyQuintana/Desktop/CS122B/apache-tomcat-8.5.29/wtpwebapps/project1/log.txt";
+		String filePath = "/Users/KimberlyQuintana/Desktop/CS122B/cs122b-spring18-team-69/HTTP_SingleInstance_No_Ps.txt";
 		
 		File file = new File(filePath);
 		
@@ -40,8 +40,8 @@ public class LogParser
 				int TJ = Integer.parseInt(values[0]), TS = Integer.parseInt(values[1]);
 				
 				count++;
-				TJTotal+= TJ;
-				TSTotal+= TS;
+				TJTotal+= TJ/1000000;
+				TSTotal+= TS/1000000;
 			}
 			
 			System.out.println("Average TJ = " + TJTotal/count + "ns");
