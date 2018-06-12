@@ -1,0 +1,59 @@
+USE moviedb; 
+DROP PROCEDURE IF EXISTS `addStar`; 
+delimiter //
+CREATE PROCEDURE `addStar` ( IN name varchar(100), IN year INT, OUT status INT) 
+BEGIN 
+IF exists(select * from id_helper where id=0) THEN SET @a = (select max(id) from stars); 
+SET @b = (cast(substring(@a,3,7) as unsigned) +1); 
+UPDATE id_helper SET id = @b limit 1; 
+ELSE
+SET @b = (select max(id) from id_helper);
+UPDATE id_helper SET id = (@b + 1);
+END IF; 
+SET @c = CONCAT("nm", CONVERT((select max(helper.id) from id_helper as helper), CHAR(100)));
+INSERT INTO stars values(@c, name, year);
+END;//
+delimiter ;
+
+
+
+DROP PROCEDURE IF EXISTS `addMovie`; 
+delimiter //
+CREATE PROCEDURE `addMovie` ( IN title varchar(100), IN year INT, IN director varchar(100), IN star varchar(100), IN starBY INT, IN genre varchar(32), OUT status INT) 
+BEGIN 
+
+IF exists(select * from movie_id_helper where id=0) THEN SET @a = (select max(id) from movies); 
+SET @b = (cast(substring(@a,3,7) as unsigned) +1); 
+UPDATE movie_id_helper SET id = @b limit 1; 
+ELSE 
+SET @b = (select max(id) from movie_id_helper);
+UPDATE movie_id_helper SET id = (@b + 1);
+END IF; 
+SET @newMovieId = CONCAT("tt", CONVERT(@b, CHAR(100)));
+INSERT INTO movies VALUES (@newMovieId, title, year, director);
+
+IF exists(select * from genres where name=genre) THEN
+	SET @genreId = (select id from genres where name=genre);
+ELSE
+	INSERT INTO genres VALUES (genre);
+	SET @genreId = (select id from genres where name=genre);
+END IF;
+INSERT INTO genres_in_movies VALUES (@genreId, @newMovieId);
+
+IF exists(select * from stars where name = star) THEN SELECT @starId=id, @starBY=birthYear FROM stars WHERE name=star;
+ELSEIF exists(select * from id_helper where id=0) THEN SET @a = (select max(id) from stars); 
+SET @b = (cast(substring(@a,3,7) as unsigned) +1); 
+UPDATE id_helper SET id = @b limit 1;
+SET @starId = CONCAT("nm", CONVERT((select max(id) from id_helper), CHAR(100)));
+INSERT INTO stars VALUES (@starId, star, starBY);
+ELSE 
+SET @b = (select max(id) from id_helper);
+UPDATE id_helper SET id = (@b + 1);
+SET @starId = CONCAT("nm", CONVERT((select max(id) from id_helper), CHAR(100)));
+INSERT INTO stars VALUES (@starId, star, starBY);
+END IF;
+INSERT INTO stars_in_movies VALUES (@starId, @newMovieId);
+
+
+END;//
+delimiter ;
